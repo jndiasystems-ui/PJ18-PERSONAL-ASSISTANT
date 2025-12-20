@@ -4654,7 +4654,7 @@
             
             html += '</div>';
             
-            // BOTONES DE ACCIÓN (DISEÑO PROFESIONAL)
+            // BOTONES DE ACCIÓN (ICONOS SVG PROFESIONALES)
             html += `
                 <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;">
                     <a href="https://calendar.google.com/calendar/u/0/r/week" target="_blank" style="
@@ -4671,7 +4671,13 @@
                         border: 1px solid var(--border-color);
                         transition: all 0.2s;
                     " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
-                        📊 Ver semana completa
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                        </svg>
+                        Ver semana completa
                     </a>
                     <a href="https://calendar.google.com/calendar/u/0/r/month" target="_blank" style="
                         background: var(--secondary-dark);
@@ -4687,7 +4693,19 @@
                         border: 1px solid var(--border-color);
                         transition: all 0.2s;
                     " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
-                        📅 Ver mes completo
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                            <line x1="16" y1="2" x2="16" y2="6"></line>
+                            <line x1="8" y1="2" x2="8" y2="6"></line>
+                            <line x1="3" y1="10" x2="21" y2="10"></line>
+                            <path d="M8 14h.01"></path>
+                            <path d="M12 14h.01"></path>
+                            <path d="M16 14h.01"></path>
+                            <path d="M8 18h.01"></path>
+                            <path d="M12 18h.01"></path>
+                            <path d="M16 18h.01"></path>
+                        </svg>
+                        Ver mes completo
                     </a>
                     <a href="https://calendar.google.com/calendar/u/0/r/eventedit" target="_blank" style="
                         background: var(--accent-blue);
@@ -4703,7 +4721,11 @@
                         border: 1px solid var(--accent-blue);
                         transition: all 0.2s;
                     " onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
-                        ➕ Crear evento
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Crear evento
                     </a>
                 </div>
             `;
@@ -4730,7 +4752,7 @@
             }
             
             let html = '<div style="max-width: 650px;">';
-            html += `<strong style="font-size: 18px;">👥 Contactos (${totalContacts} total)</strong><br><br>`;
+            html += `<strong style="font-size: 18px;">Contactos (${totalContacts} total)</strong><br><br>`;
             
             html += `<div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">Mostrando ${contacts.length} de ${totalContacts} contactos:</div>`;
             
@@ -4762,7 +4784,7 @@
                         <div style="flex: 1; min-width: 0;">
                             <div style="font-weight: 600; font-size: 15px; margin-bottom: 2px;">${escapeHtml(name)}</div>
                             ${email ? `<div style="font-size: 12px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email)}</div>` : ''}
-                            ${phone ? `<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">📞 ${escapeHtml(phone)}</div>` : ''}
+                            ${phone ? `<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">${escapeHtml(phone)}</div>` : ''}
                         </div>
                         <div style="display: flex; gap: 8px; flex-shrink: 0;">
                             ${phone ? `
@@ -4776,11 +4798,12 @@
                                     align-items: center;
                                     justify-content: center;
                                     text-decoration: none;
-                                    font-size: 18px;
                                     border: 1px solid var(--border-color);
                                     transition: all 0.2s;
                                 " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
-                                    📞
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
                                 </a>
                             ` : ''}
                             <button onclick="showContactInfo('${escapeHtml(name)}', '${escapeHtml(email)}', '${escapeHtml(phone)}', '${photo}')" title="Ver información" style="
@@ -4792,12 +4815,15 @@
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
-                                font-size: 16px;
                                 border: 1px solid var(--border-color);
                                 cursor: pointer;
                                 transition: all 0.2s;
                             " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
-                                ℹ️
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <line x1="12" y1="16" x2="12" y2="12"></line>
+                                    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                                </svg>
                             </button>
                         </div>
                     </div>
@@ -4806,7 +4832,8 @@
             
             html += '</div>';
             
-            // BARRA DE BÚSQUEDA (MOVIDA ABAJO)
+            // BARRA DE BÚSQUEDA (con ID único para evitar conflictos)
+            const searchId = 'contactSearchInput_' + Date.now();
             html += `
                 <div style="
                     background: var(--tertiary-dark);
@@ -4818,11 +4845,14 @@
                     gap: 10px;
                     border: 1px solid var(--border-color);
                 ">
-                    <span style="font-size: 18px;">🔍</span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
                     <input 
                         type="text" 
                         placeholder="Buscar contacto por nombre o email..." 
-                        id="contactSearchInput"
+                        id="${searchId}"
                         style="
                             flex: 1;
                             background: transparent;
@@ -4835,7 +4865,7 @@
                 </div>
             `;
             
-            // BOTONES PRINCIPALES (DISEÑO PROFESIONAL)
+            // BOTONES PRINCIPALES (ICONOS SVG PROFESIONALES)
             html += `
                 <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="https://contacts.google.com/" target="_blank" style="
@@ -4852,7 +4882,13 @@
                         border: 1px solid var(--border-color);
                         transition: all 0.2s;
                     " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
-                        👥 Ver todos los contactos
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Ver todos los contactos
                     </a>
                     <a href="https://contacts.google.com/new" target="_blank" style="
                         background: var(--accent-blue);
@@ -4868,40 +4904,40 @@
                         border: 1px solid var(--accent-blue);
                         transition: all 0.2s;
                     " onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
-                        ➕ Agregar nuevo contacto
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="5" x2="12" y2="19"></line>
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                        </svg>
+                        Agregar nuevo contacto
                     </a>
                 </div>
             `;
             
             html += '</div>';
             
-            // Script de búsqueda en tiempo real
-            html += `
-                <script>
-                    setTimeout(() => {
-                        const searchInput = document.getElementById('contactSearchInput');
-                        if (searchInput) {
-                            searchInput.addEventListener('input', (e) => {
-                                const query = e.target.value.toLowerCase();
-                                const items = document.querySelectorAll('.contact-item');
-                                
-                                items.forEach(item => {
-                                    const name = item.getAttribute('data-name');
-                                    const email = item.getAttribute('data-email');
-                                    
-                                    if (name.includes(query) || email.includes(query)) {
-                                        item.style.display = 'flex';
-                                    } else {
-                                        item.style.display = 'none';
-                                    }
-                                });
-                            });
-                        }
-                    }, 100);
-                <\/script>
-            `;
-            
             addMessageToChat(html, 'ai', true);
+            
+            // Script de búsqueda - ejecutar después de que el HTML esté en el DOM
+            setTimeout(() => {
+                const searchInput = document.getElementById('${searchId}');
+                if (searchInput) {
+                    searchInput.addEventListener('input', function(e) {
+                        const query = e.target.value.toLowerCase();
+                        const items = document.querySelectorAll('.contact-item');
+                        
+                        items.forEach(function(item) {
+                            const name = item.getAttribute('data-name') || '';
+                            const email = item.getAttribute('data-email') || '';
+                            
+                            if (name.includes(query) || email.includes(query)) {
+                                item.style.display = 'flex';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            }, 200);
         }
         
         // Función para mostrar información detallada del contacto
@@ -4927,7 +4963,10 @@
             if (email) {
                 infoHtml += `
                     <div style="background: var(--secondary-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 20px;">📧</div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                        </svg>
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">EMAIL</div>
                             <div style="font-size: 14px; word-break: break-all;">${escapeHtml(email)}</div>
@@ -4948,7 +4987,9 @@
             if (phone) {
                 infoHtml += `
                     <div style="background: var(--secondary-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color);">
-                        <div style="font-size: 20px;">📞</div>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                        </svg>
                         <div style="flex: 1;">
                             <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">TELÉFONO</div>
                             <div style="font-size: 14px;">${escapeHtml(phone)}</div>
