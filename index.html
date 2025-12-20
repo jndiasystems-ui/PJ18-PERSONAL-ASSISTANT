@@ -4654,12 +4654,12 @@
             
             html += '</div>';
             
-            // BOTONES DE ACCIÓN
+            // BOTONES DE ACCIÓN (DISEÑO PROFESIONAL)
             html += `
-                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 16px;">
+                <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 16px;">
                     <a href="https://calendar.google.com/calendar/u/0/r/week" target="_blank" style="
-                        background: #667eea;
-                        color: white;
+                        background: var(--secondary-dark);
+                        color: var(--text-primary);
                         padding: 10px 16px;
                         border-radius: 8px;
                         text-decoration: none;
@@ -4667,13 +4667,15 @@
                         font-weight: 500;
                         display: inline-flex;
                         align-items: center;
-                        gap: 6px;
-                    ">
+                        gap: 8px;
+                        border: 1px solid var(--border-color);
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
                         📊 Ver semana completa
                     </a>
                     <a href="https://calendar.google.com/calendar/u/0/r/month" target="_blank" style="
-                        background: #9333ea;
-                        color: white;
+                        background: var(--secondary-dark);
+                        color: var(--text-primary);
                         padding: 10px 16px;
                         border-radius: 8px;
                         text-decoration: none;
@@ -4681,12 +4683,14 @@
                         font-weight: 500;
                         display: inline-flex;
                         align-items: center;
-                        gap: 6px;
-                    ">
+                        gap: 8px;
+                        border: 1px solid var(--border-color);
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
                         📅 Ver mes completo
                     </a>
                     <a href="https://calendar.google.com/calendar/u/0/r/eventedit" target="_blank" style="
-                        background: #059669;
+                        background: var(--accent-blue);
                         color: white;
                         padding: 10px 16px;
                         border-radius: 8px;
@@ -4695,8 +4699,10 @@
                         font-weight: 500;
                         display: inline-flex;
                         align-items: center;
-                        gap: 6px;
-                    ">
+                        gap: 8px;
+                        border: 1px solid var(--accent-blue);
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
                         ➕ Crear evento
                     </a>
                 </div>
@@ -4726,40 +4732,10 @@
             let html = '<div style="max-width: 650px;">';
             html += `<strong style="font-size: 18px;">👥 Contactos (${totalContacts} total)</strong><br><br>`;
             
-            // BARRA DE BÚSQUEDA
-            html += `
-                <div style="
-                    background: var(--tertiary-dark);
-                    padding: 12px;
-                    border-radius: 8px;
-                    margin-bottom: 16px;
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-                ">
-                    <span style="font-size: 18px;">🔍</span>
-                    <input 
-                        type="text" 
-                        placeholder="Buscar contacto por nombre o email..." 
-                        id="contactSearchInput"
-                        style="
-                            flex: 1;
-                            background: rgba(255, 255, 255, 0.05);
-                            border: 1px solid var(--border-color);
-                            border-radius: 6px;
-                            padding: 8px 12px;
-                            color: var(--text-primary);
-                            font-size: 14px;
-                            outline: none;
-                        "
-                    />
-                </div>
-            `;
-            
             html += `<div style="font-size: 13px; color: var(--text-secondary); margin-bottom: 12px;">Mostrando ${contacts.length} de ${totalContacts} contactos:</div>`;
             
             // LISTA DE CONTACTOS
-            html += '<div id="contactsList" style="display: grid; gap: 10px;">';
+            html += '<div id="contactsList" style="display: grid; gap: 10px; margin-bottom: 16px;">';
             
             contacts.forEach((contact, index) => {
                 const name = contact.names?.[0]?.displayName || 'Sin nombre';
@@ -4776,6 +4752,7 @@
                         display: flex;
                         align-items: center;
                         gap: 12px;
+                        border: 1px solid var(--border-color);
                         transition: all 0.2s;
                     ">
                         ${photo ? 
@@ -4787,56 +4764,41 @@
                             ${email ? `<div style="font-size: 12px; color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${escapeHtml(email)}</div>` : ''}
                             ${phone ? `<div style="font-size: 12px; color: var(--text-secondary); margin-top: 2px;">📞 ${escapeHtml(phone)}</div>` : ''}
                         </div>
-                        <div style="display: flex; gap: 6px; flex-shrink: 0;">
-                            ${email ? `
-                                <a href="mailto:${email}" title="Enviar email" style="
-                                    background: #667eea;
-                                    color: white;
-                                    width: 32px;
-                                    height: 32px;
-                                    border-radius: 6px;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                                    text-decoration: none;
-                                    font-size: 16px;
-                                    transition: all 0.2s;
-                                " onmouseover="this.style.background='#5b7cff'" onmouseout="this.style.background='#667eea'">
-                                    📧
-                                </a>
-                            ` : ''}
+                        <div style="display: flex; gap: 8px; flex-shrink: 0;">
                             ${phone ? `
                                 <a href="tel:${phone}" title="Llamar" style="
-                                    background: #059669;
-                                    color: white;
-                                    width: 32px;
-                                    height: 32px;
+                                    background: var(--secondary-dark);
+                                    color: var(--text-primary);
+                                    width: 36px;
+                                    height: 36px;
                                     border-radius: 6px;
                                     display: flex;
                                     align-items: center;
                                     justify-content: center;
                                     text-decoration: none;
-                                    font-size: 16px;
+                                    font-size: 18px;
+                                    border: 1px solid var(--border-color);
                                     transition: all 0.2s;
-                                " onmouseover="this.style.background='#047857'" onmouseout="this.style.background='#059669'">
+                                " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
                                     📞
                                 </a>
                             ` : ''}
-                            <a href="https://contacts.google.com/" target="_blank" title="Ver detalles en Google Contacts" style="
-                                background: rgba(255, 255, 255, 0.1);
+                            <button onclick="showContactInfo('${escapeHtml(name)}', '${escapeHtml(email)}', '${escapeHtml(phone)}', '${photo}')" title="Ver información" style="
+                                background: var(--secondary-dark);
                                 color: var(--text-primary);
-                                width: 32px;
-                                height: 32px;
+                                width: 36px;
+                                height: 36px;
                                 border-radius: 6px;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
-                                text-decoration: none;
-                                font-size: 14px;
+                                font-size: 16px;
+                                border: 1px solid var(--border-color);
+                                cursor: pointer;
                                 transition: all 0.2s;
-                            " onmouseover="this.style.background='rgba(255, 255, 255, 0.15)'" onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'">
+                            " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
                                 ℹ️
-                            </a>
+                            </button>
                         </div>
                     </div>
                 `;
@@ -4844,13 +4806,42 @@
             
             html += '</div>';
             
-            // BOTONES DE ACCIÓN PRINCIPALES
+            // BARRA DE BÚSQUEDA (MOVIDA ABAJO)
             html += `
-                <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px;">
+                <div style="
+                    background: var(--tertiary-dark);
+                    padding: 12px;
+                    border-radius: 8px;
+                    margin-bottom: 16px;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    border: 1px solid var(--border-color);
+                ">
+                    <span style="font-size: 18px;">🔍</span>
+                    <input 
+                        type="text" 
+                        placeholder="Buscar contacto por nombre o email..." 
+                        id="contactSearchInput"
+                        style="
+                            flex: 1;
+                            background: transparent;
+                            border: none;
+                            color: var(--text-primary);
+                            font-size: 14px;
+                            outline: none;
+                        "
+                    />
+                </div>
+            `;
+            
+            // BOTONES PRINCIPALES (DISEÑO PROFESIONAL)
+            html += `
+                <div style="display: flex; gap: 10px; flex-wrap: wrap;">
                     <a href="https://contacts.google.com/" target="_blank" style="
-                        background: #667eea;
-                        color: white;
-                        padding: 12px 18px;
+                        background: var(--secondary-dark);
+                        color: var(--text-primary);
+                        padding: 10px 16px;
                         border-radius: 8px;
                         text-decoration: none;
                         font-size: 14px;
@@ -4858,13 +4849,15 @@
                         display: inline-flex;
                         align-items: center;
                         gap: 8px;
-                    ">
+                        border: 1px solid var(--border-color);
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='var(--tertiary-dark)'; this.style.borderColor='var(--accent-blue)'" onmouseout="this.style.background='var(--secondary-dark)'; this.style.borderColor='var(--border-color)'">
                         👥 Ver todos los contactos
                     </a>
                     <a href="https://contacts.google.com/new" target="_blank" style="
-                        background: #059669;
+                        background: var(--accent-blue);
                         color: white;
-                        padding: 12px 18px;
+                        padding: 10px 16px;
                         border-radius: 8px;
                         text-decoration: none;
                         font-size: 14px;
@@ -4872,7 +4865,9 @@
                         display: inline-flex;
                         align-items: center;
                         gap: 8px;
-                    ">
+                        border: 1px solid var(--accent-blue);
+                        transition: all 0.2s;
+                    " onmouseover="this.style.background='var(--accent-blue-hover)'" onmouseout="this.style.background='var(--accent-blue)'">
                         ➕ Agregar nuevo contacto
                     </a>
                 </div>
@@ -4880,7 +4875,7 @@
             
             html += '</div>';
             
-            // Agregar el script de búsqueda inline
+            // Script de búsqueda en tiempo real
             html += `
                 <script>
                     setTimeout(() => {
@@ -4908,6 +4903,74 @@
             
             addMessageToChat(html, 'ai', true);
         }
+        
+        // Función para mostrar información detallada del contacto
+        window.showContactInfo = function(name, email, phone, photo) {
+            const initial = name.charAt(0).toUpperCase();
+            
+            let infoHtml = '<div style="max-width: 400px;">';
+            infoHtml += '<div style="background: var(--tertiary-dark); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color);">';
+            
+            // Avatar
+            infoHtml += '<div style="text-align: center; margin-bottom: 16px;">';
+            if (photo) {
+                infoHtml += `<img src="${photo}" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--accent-blue);">`;
+            } else {
+                infoHtml += `<div style="width: 80px; height: 80px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: inline-flex; align-items: center; justify-content: center; font-weight: 600; font-size: 32px; border: 3px solid var(--accent-blue);">${initial}</div>`;
+            }
+            infoHtml += '</div>';
+            
+            // Nombre
+            infoHtml += `<div style="text-align: center; font-size: 20px; font-weight: 600; margin-bottom: 20px;">${escapeHtml(name)}</div>`;
+            
+            // Información de contacto
+            if (email) {
+                infoHtml += `
+                    <div style="background: var(--secondary-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color);">
+                        <div style="font-size: 20px;">📧</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">EMAIL</div>
+                            <div style="font-size: 14px; word-break: break-all;">${escapeHtml(email)}</div>
+                        </div>
+                        <a href="mailto:${email}" style="
+                            background: var(--accent-blue);
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 6px;
+                            text-decoration: none;
+                            font-size: 12px;
+                            border: none;
+                        ">Enviar</a>
+                    </div>
+                `;
+            }
+            
+            if (phone) {
+                infoHtml += `
+                    <div style="background: var(--secondary-dark); padding: 12px; border-radius: 8px; margin-bottom: 10px; display: flex; align-items: center; gap: 12px; border: 1px solid var(--border-color);">
+                        <div style="font-size: 20px;">📞</div>
+                        <div style="flex: 1;">
+                            <div style="font-size: 11px; color: var(--text-secondary); margin-bottom: 2px;">TELÉFONO</div>
+                            <div style="font-size: 14px;">${escapeHtml(phone)}</div>
+                        </div>
+                        <a href="tel:${phone}" style="
+                            background: var(--accent-blue);
+                            color: white;
+                            padding: 6px 12px;
+                            border-radius: 6px;
+                            text-decoration: none;
+                            font-size: 12px;
+                            border: none;
+                        ">Llamar</a>
+                    </div>
+                `;
+            }
+            
+            infoHtml += '</div></div>';
+            
+            addMessageToChat(infoHtml, 'ai', true);
+        }
+        
         // ==========================================
         // FILE HANDLING
         // ==========================================
