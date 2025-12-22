@@ -610,6 +610,112 @@
             border-color: var(--accent-blue);
         }
 
+        /* Theme Switch Toggle */
+        .theme-switch-wrapper {
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 120px;
+            height: 36px;
+            cursor: pointer;
+        }
+
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .theme-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f5f5f5;
+            border-radius: 18px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 4px;
+            border: 2px solid var(--border-color);
+        }
+
+        .theme-label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50%;
+            height: 100%;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .theme-label svg {
+            width: 18px;
+            height: 18px;
+            transition: all 0.3s;
+        }
+
+        .theme-label-left svg {
+            stroke: #666;
+        }
+
+        .theme-label-right svg {
+            stroke: #666;
+        }
+
+        /* Estado: Light Mode (default) */
+        .theme-slider::before {
+            content: "";
+            position: absolute;
+            height: 28px;
+            width: 56px;
+            left: 4px;
+            bottom: 2px;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            border-radius: 14px;
+            transition: all 0.3s;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Cuando está checked (Dark Mode) */
+        input:checked + .theme-slider {
+            background: #1a1a2e;
+            border-color: var(--accent-blue);
+        }
+
+        input:checked + .theme-slider::before {
+            transform: translateX(56px);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        input:checked + .theme-slider .theme-label-right svg {
+            stroke: white;
+        }
+
+        input:not(:checked) + .theme-slider .theme-label-left svg {
+            stroke: #333;
+        }
+
+        /* Tema claro */
+        .light-theme .theme-slider {
+            background: #ffffff;
+        }
+
+        .light-theme .theme-label-left svg {
+            stroke: #333;
+        }
+
+        .light-theme .theme-label-right svg {
+            stroke: #999;
+        }
+
         /* MAIN CONTENT - 3 PANELS */
         .main-content {
             display: flex;
@@ -2365,6 +2471,33 @@
                     </select>
                 </div>
 
+                <!-- 3.5 Theme Toggle Switch -->
+                <div class="theme-switch-wrapper">
+                    <label class="theme-switch">
+                        <input type="checkbox" id="themeSwitchCheckbox" onchange="window.toggleTheme()">
+                        <span class="theme-slider">
+                            <span class="theme-label theme-label-left">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="5"></circle>
+                                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                                </svg>
+                            </span>
+                            <span class="theme-label theme-label-right">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                                </svg>
+                            </span>
+                        </span>
+                    </label>
+                </div>
+
                 <!-- 4. User menu -->
                 <div class="user-section">
                     <div class="user-avatar" id="userAvatar" onclick="window.toggleUserMenu()">
@@ -3347,17 +3480,36 @@
             const container = document.getElementById('widgetsContainer');
             const activeWidgets = AVAILABLE_WIDGETS.filter(w => w.active);
             
-            // Restaurar orden guardado si existe
+            // Restaurar orden guardado si existe, pero agregar nuevos widgets al final
             const savedOrder = localStorage.getItem('tefy_widgets_order');
             if (savedOrder) {
                 const orderIds = JSON.parse(savedOrder);
-                activeWidgets.sort((a, b) => {
-                    const indexA = orderIds.indexOf(a.id);
-                    const indexB = orderIds.indexOf(b.id);
-                    if (indexA === -1) return 1;
-                    if (indexB === -1) return -1;
-                    return indexA - indexB;
+                
+                // Separar widgets que están en el orden guardado de los nuevos
+                const orderedWidgets = [];
+                const newWidgets = [];
+                
+                activeWidgets.forEach(widget => {
+                    if (orderIds.includes(widget.id)) {
+                        orderedWidgets.push(widget);
+                    } else {
+                        newWidgets.push(widget);
+                    }
                 });
+                
+                // Ordenar los widgets que están en el orden guardado
+                orderedWidgets.sort((a, b) => {
+                    return orderIds.indexOf(a.id) - orderIds.indexOf(b.id);
+                });
+                
+                // Combinar: primero los ordenados, luego los nuevos
+                const finalWidgets = [...orderedWidgets, ...newWidgets];
+                activeWidgets.length = 0;
+                activeWidgets.push(...finalWidgets);
+                
+                // Actualizar orden guardado para incluir los nuevos
+                const newOrder = activeWidgets.map(w => w.id);
+                localStorage.setItem('tefy_widgets_order', JSON.stringify(newOrder));
             }
             
             let html = '';
@@ -6830,6 +6982,12 @@
                 document.body.classList.add('light-theme');
             }
             
+            // Inicializar switch del tema
+            const switchCheckbox = document.getElementById('themeSwitchCheckbox');
+            if (switchCheckbox) {
+                switchCheckbox.checked = savedTheme === 'dark'; // checked = dark mode
+            }
+            
             // Actualizar iconos del tema en el menú lateral
             function updateThemeIcons() {
                 const isLight = document.body.classList.contains('light-theme');
@@ -6853,6 +7011,12 @@
                 const isLight = document.body.classList.contains('light-theme');
                 localStorage.setItem('stefy_theme', isLight ? 'light' : 'dark');
                 updateThemeIcons();
+                
+                // Actualizar estado del switch
+                const switchCheckbox = document.getElementById('themeSwitchCheckbox');
+                if (switchCheckbox) {
+                    switchCheckbox.checked = !isLight; // checked = dark mode
+                }
             }
 
             // 2. BÚSQUEDA EN HISTORIAL
