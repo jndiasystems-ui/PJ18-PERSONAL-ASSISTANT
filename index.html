@@ -543,35 +543,36 @@
         }
 
         .language-selector-modern {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
-            border: 2px solid rgba(102, 126, 234, 0.3);
+            background: transparent;
+            border: 1px solid var(--border-color);
             color: var(--text-primary);
-            padding: 8px 16px;
-            padding-right: 36px;
-            border-radius: 12px;
+            padding: 6px 12px;
+            padding-right: 28px;
+            border-radius: 8px;
             cursor: pointer;
-            font-size: 13px;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.2s;
             outline: none;
             appearance: none;
             -webkit-appearance: none;
             -moz-appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%23667eea' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg width='10' height='6' viewBox='0 0 10 6' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L5 5L9 1' stroke='%23667eea' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 12px center;
+            background-position: right 8px center;
+            min-width: 60px;
+            text-align: center;
         }
 
         .language-selector-modern:hover {
-            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
-            border-color: #667eea;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+            border-color: var(--accent-blue);
+            background: var(--tertiary-dark);
         }
 
         .language-selector-modern:focus {
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
         }
 
         /* Estilo para las opciones del dropdown */
@@ -639,6 +640,17 @@
             width: 25%;
             min-width: 250px;
             border-right: none;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Header del panel-right sticky */
+        .panel-right .panel-header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: var(--tertiary-dark);
         }
 
         /* PANEL HEADERS */
@@ -1363,6 +1375,10 @@
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
+            flex: 1;
+            overflow-y: auto;
+            overflow-x: hidden;
+            max-height: calc(100vh - 220px); /* Espacio para header y resumen */
         }
 
         .widget-card {
@@ -1391,10 +1407,14 @@
         }
 
         .quick-summary {
-            margin: 16px;
+            margin: 0;
             padding: 16px;
             background: var(--tertiary-dark);
-            border-radius: 12px;
+            border-radius: 0;
+            border-top: 1px solid var(--border-color);
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
         }
 
         .summary-title {
@@ -1600,53 +1620,68 @@
         .voice-message-player {
             display: flex;
             align-items: center;
-            gap: 12px;
-            background: var(--tertiary-dark);
-            padding: 12px;
-            border-radius: 8px;
+            gap: 8px;
+            background: var(--accent-blue);
+            padding: 8px 12px;
+            border-radius: 18px;
             margin-top: 8px;
             min-width: 200px;
+            max-width: 300px;
         }
 
         .play-voice-btn {
-            width: 40px;
-            height: 40px;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
             border-radius: 50%;
-            background: var(--accent-blue);
+            background: white;
             border: none;
-            color: white;
-            font-size: 16px;
+            color: var(--accent-blue);
+            font-size: 12px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
+            padding-left: 2px;
         }
 
         .play-voice-btn:hover {
-            background: var(--accent-blue-hover);
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
 
         .play-voice-btn.playing {
-            background: var(--error-red);
+            background: white;
+            color: var(--error-red);
         }
 
         .voice-waveform {
             flex: 1;
-            height: 24px;
-            background: linear-gradient(90deg,
-                    var(--accent-blue) 0%,
-                    var(--accent-blue) var(--progress, 0%),
-                    var(--border-color) var(--progress, 0%),
-                    var(--border-color) 100%);
-            border-radius: 4px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .voice-waveform::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: var(--progress, 0%);
+            background: white;
+            border-radius: 2px;
+            transition: width 0.1s linear;
         }
 
         .voice-duration {
-            font-size: 12px;
-            color: var(--text-secondary);
-            min-width: 40px;
+            font-size: 11px;
+            color: white;
+            min-width: 35px;
+            text-align: right;
+            font-weight: 500;
         }
 
         /* 5. Confirmación visual (✓✓) */
@@ -2288,12 +2323,12 @@
                     </svg>
                 </button>
 
-                <!-- 3. Selector de idioma (mejorado) -->
+                <!-- 3. Selector de idioma (solo códigos) -->
                 <div class="language-selector-wrapper">
                     <select id="languageSelector" class="language-selector-modern" onchange="window.changeLanguage(this.value)">
-                        <option value="es">🇪🇸 Español</option>
-                        <option value="en">🇺🇸 English</option>
-                        <option value="he">🇮🇱 עברית</option>
+                        <option value="es">ES</option>
+                        <option value="en">EN</option>
+                        <option value="he">HE</option>
                     </select>
                 </div>
 
