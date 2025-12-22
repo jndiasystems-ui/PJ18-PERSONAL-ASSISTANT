@@ -4,16 +4,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Stefy - Tu asistente personal avanzado con IA">
+    <meta name="description" content="Tefy AI - Tu asistente personal avanzado con IA">
     <meta name="theme-color" content="#4a6bff">
-    <title>Stefy - Asistente Personal Avanzado</title>
+    <title>Tefy AI - Asistente Personal Avanzado</title>
 
     <!-- PWA Meta Tags -->
     <!-- <link rel="manifest" href="manifest.json"> -->
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Stefy">
+    <meta name="apple-mobile-web-app-title" content="Tefy AI">
 
     <!-- Google Sign-In -->
     <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -1385,7 +1385,7 @@
             background: var(--tertiary-dark);
             border-radius: 10px;
             padding: 12px;
-            cursor: pointer;
+            cursor: move;
             transition: all 0.2s;
             text-align: center;
             border: 1px solid transparent;
@@ -1394,6 +1394,16 @@
         .widget-card:hover {
             border-color: var(--accent-blue);
             transform: translateY(-2px);
+        }
+        
+        .widget-card.drag-over {
+            border-color: var(--accent-blue);
+            background: var(--secondary-dark);
+            transform: scale(1.05);
+        }
+        
+        .widget-card[draggable="true"] {
+            cursor: move;
         }
 
         .widget-icon {
@@ -1621,12 +1631,19 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            background: transparent;
-            padding: 8px;
-            border-radius: 8px;
-            margin-top: 8px;
-            min-width: 200px;
+            background: var(--tertiary-dark);
+            padding: 10px 12px;
+            border-radius: 12px;
+            margin-top: 4px;
+            min-width: 220px;
             max-width: 280px;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Audio en mensaje de usuario - sin fondo azul */
+        .message.user .voice-message-player {
+            background: var(--tertiary-dark);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .play-voice-btn {
@@ -1634,7 +1651,7 @@
             height: 36px;
             min-width: 36px;
             border-radius: 50%;
-            background: #333;
+            background: var(--accent-blue);
             border: none;
             color: white;
             font-size: 14px;
@@ -1647,12 +1664,12 @@
         }
 
         .play-voice-btn:hover {
-            background: #555;
+            background: var(--accent-blue-hover);
             transform: scale(1.05);
         }
 
         .play-voice-btn.playing {
-            background: #333;
+            background: var(--accent-blue);
         }
 
         .voice-waveform {
@@ -2250,7 +2267,7 @@
     <div class="login-screen" id="loginScreen">
         <div class="login-container">
             <div class="login-logo">🤖</div>
-            <h1 class="login-title">Stefy</h1>
+            <h1 class="login-title">Tefy AI</h1>
             <p class="login-subtitle">Asistente Personal Avanzado</p>
 
             <button class="google-btn" onclick="handleGoogleLogin()">
@@ -2289,37 +2306,30 @@
             </button>
 
             <div class="app-logo">
-                <svg viewBox="0 0 200 200" class="icon-svg" style="width: 38px; height: 38px;">
+                <svg viewBox="0 0 100 100" class="icon-svg" style="width: 38px; height: 38px;">
                     <defs>
-                        <style>
-                            .logo-blue { fill: #1da1f2; }
-                            .logo-dark { fill: #2c3e50; }
-                        </style>
+                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
+                        </linearGradient>
                     </defs>
                     
-                    <!-- Círculo externo azul -->
-                    <circle cx="100" cy="95" r="75" fill="none" stroke="#1da1f2" stroke-width="12"/>
+                    <!-- Círculo exterior con gradiente -->
+                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradient)" stroke-width="3"/>
                     
-                    <!-- Círculo interno oscuro -->
-                    <circle cx="100" cy="95" r="60" fill="none" stroke="#2c3e50" stroke-width="8"/>
+                    <!-- Forma de "T" estilizada tecnológica -->
+                    <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradient)"/>
                     
-                    <!-- Auricular izquierdo -->
-                    <rect x="35" y="75" width="20" height="45" rx="10" class="logo-dark"/>
+                    <!-- Puntos de circuito tecnológico -->
+                    <circle cx="30" cy="60" r="3" fill="#667eea"/>
+                    <circle cx="70" cy="60" r="3" fill="#667eea"/>
+                    <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
                     
-                    <!-- Auricular derecho -->
-                    <rect x="145" y="75" width="20" height="45" rx="10" class="logo-dark"/>
-                    
-                    <!-- Banda superior (curva) -->
-                    <path d="M 55 75 Q 100 40 145 75" fill="none" stroke="#1da1f2" stroke-width="14" stroke-linecap="round"/>
-                    
-                    <!-- Micrófono -->
-                    <path d="M 100 120 Q 105 140 120 145" fill="none" stroke="#2c3e50" stroke-width="10" stroke-linecap="round"/>
-                    <ellipse cx="125" cy="147" rx="8" ry="10" class="logo-dark"/>
-                    
-                    <!-- Burbuja de chat (flecha abajo) -->
-                    <path d="M 165 155 L 175 175 L 165 165 Z" class="logo-blue"/>
+                    <!-- Líneas de conexión -->
+                    <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                    <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
                 </svg>
-                <span>Stefy</span>
+                <span>Tefy AI</span>
             </div>
 
             <div class="header-controls">
@@ -2447,7 +2457,7 @@
                 <button class="side-menu-item" onclick="alert('Configuración avanzada - En desarrollo')">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6m0-12l-4.5-2.5m9 0L12 7m0 10l-4.5 2.5m9 0L12 17M1 12h6m6 0h6m-12 0l-2.5-4.5m0 9L7 12m10 0l2.5-4.5m0 9L17 12"></path>
+                        <path d="M12 1v6M12 17v6M4.22 4.22l4.24 4.24M15.54 15.54l4.24 4.24M1 12h6M17 12h6M4.22 19.78l4.24-4.24M15.54 8.46l4.24-4.24"></path>
                     </svg>
                     <span>Configuración</span>
                 </button>
@@ -2469,12 +2479,12 @@
                         <line x1="12" y1="16" x2="12" y2="12"></line>
                         <line x1="12" y1="8" x2="12.01" y2="8"></line>
                     </svg>
-                    <span>Acerca de Stefy</span>
+                    <span>Acerca de Tefy AI</span>
                 </button>
             </div>
 
             <div class="side-menu-footer">
-                Stefy v2.2 - Asistente Personal<br>
+                Tefy AI v2.2 - Asistente Personal<br>
                 © 2024 JND AI SYSTEMS
             </div>
         </div>
@@ -2708,17 +2718,22 @@
             <!-- CENTER PANEL - CHAT -->
             <main class="panel panel-center">
                 <div class="panel-header" style="justify-content: flex-start;">
-                    <svg viewBox="0 0 200 200" class="icon-svg" style="width: 26px; height: 26px; margin-right: 8px;">
-                        <circle cx="100" cy="95" r="75" fill="none" stroke="#1da1f2" stroke-width="12"/>
-                        <circle cx="100" cy="95" r="60" fill="none" stroke="#2c3e50" stroke-width="8"/>
-                        <rect x="35" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                        <rect x="145" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                        <path d="M 55 75 Q 100 40 145 75" fill="none" stroke="#1da1f2" stroke-width="14" stroke-linecap="round"/>
-                        <path d="M 100 120 Q 105 140 120 145" fill="none" stroke="#2c3e50" stroke-width="10" stroke-linecap="round"/>
-                        <ellipse cx="125" cy="147" rx="8" ry="10" fill="#2c3e50"/>
-                        <path d="M 165 155 L 175 175 L 165 165 Z" fill="#1da1f2"/>
+                    <svg viewBox="0 0 100 100" class="icon-svg" style="width: 26px; height: 26px; margin-right: 8px;">
+                        <defs>
+                            <linearGradient id="logoGradientChat" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradientChat)" stroke-width="3"/>
+                        <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradientChat)"/>
+                        <circle cx="30" cy="60" r="3" fill="#667eea"/>
+                        <circle cx="70" cy="60" r="3" fill="#667eea"/>
+                        <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
+                        <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                        <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
                     </svg>
-                    <span>Chat con Stefy</span>
+                    <span>Chat con Tefy AI</span>
                 </div>
 
                 <div class="chat-messages" id="chatMessages">
@@ -2726,19 +2741,25 @@
                     <div class="message ai">
                         <div class="message ai">
                             <div class="message-avatar">
-                                <svg viewBox="0 0 200 200" style="width: 36px; height: 36px;">
-                                    <circle cx="100" cy="95" r="75" fill="none" stroke="#1da1f2" stroke-width="12"/>
-                                    <circle cx="100" cy="95" r="60" fill="none" stroke="#2c3e50" stroke-width="8"/>
-                                    <rect x="35" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                                    <rect x="145" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                                    <path d="M 55 75 Q 100 40 145 75" fill="none" stroke="#1da1f2" stroke-width="14" stroke-linecap="round"/>
-                                    <path d="M 100 120 Q 105 140 120 145" fill="none" stroke="#2c3e50" stroke-width="10" stroke-linecap="round"/>
-                                    <ellipse cx="125" cy="147" rx="8" ry="10" fill="#2c3e50"/>
+                                <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
+                                    <defs>
+                                        <linearGradient id="logoGradientAvatar" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                            <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
+                                        </linearGradient>
+                                    </defs>
+                                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradientAvatar)" stroke-width="3"/>
+                                    <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradientAvatar)"/>
+                                    <circle cx="30" cy="60" r="3" fill="#667eea"/>
+                                    <circle cx="70" cy="60" r="3" fill="#667eea"/>
+                                    <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
+                                    <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                                    <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
                                 </svg>
                             </div>
                             <div>
                                 <div class="message-content">
-                                    ¡Hola! Soy Stefy, tu asistente personal avanzado. Puedo ayudarte con tu calendario,
+                                    ¡Hola! Soy Tefy AI, tu asistente personal avanzado. Puedo ayudarte con tu calendario,
                                     contactos, documentos, mensajería y más. ¿En qué puedo ayudarte hoy?
                                 </div>
                                 <div class="message-time" id="welcomeTime"></div>
@@ -2979,7 +3000,7 @@
                 // Paneles
                 myFiles: 'Mis Archivos',
                 quickAccess: 'Accesos Rápidos',
-                chatWith: 'Chat con Stefy',
+                chatWith: 'Chat con Tefy AI',
                 // Secciones
                 folders: 'CARPETAS',
                 recentFiles: 'ARCHIVOS RECIENTES',
@@ -3013,7 +3034,7 @@
                 // Panels
                 myFiles: 'My Files',
                 quickAccess: 'Quick Access',
-                chatWith: 'Chat with Stefy',
+                chatWith: 'Chat with Tefy AI',
                 // Sections
                 folders: 'FOLDERS',
                 recentFiles: 'RECENT FILES',
@@ -3047,7 +3068,7 @@
                 // פאנלים
                 myFiles: 'הקבצים שלי',
                 quickAccess: 'גישה מהירה',
-                chatWith: 'צ\'אט עם Stefy',
+                chatWith: 'צ\'אט עם Tefy AI',
                 // חלקים
                 folders: 'תיקיות',
                 recentFiles: 'קבצים אחרונים',
@@ -3287,9 +3308,22 @@
             const container = document.getElementById('widgetsContainer');
             const activeWidgets = AVAILABLE_WIDGETS.filter(w => w.active);
             
+            // Restaurar orden guardado si existe
+            const savedOrder = localStorage.getItem('tefy_widgets_order');
+            if (savedOrder) {
+                const orderIds = JSON.parse(savedOrder);
+                activeWidgets.sort((a, b) => {
+                    const indexA = orderIds.indexOf(a.id);
+                    const indexB = orderIds.indexOf(b.id);
+                    if (indexA === -1) return 1;
+                    if (indexB === -1) return -1;
+                    return indexA - indexB;
+                });
+            }
+            
             let html = '';
             
-            activeWidgets.forEach(widget => {
+            activeWidgets.forEach((widget, index) => {
                 // Determinar la acción onclick
                 let onclickAction = '';
                 if (widget.type === 'internal') {
@@ -3298,7 +3332,7 @@
                     onclickAction = 'window.open(\'' + widget.url + '\', \'_blank\')';
                 }
                 
-                html += '<div class="widget-card" onclick="' + onclickAction + '">';
+                html += '<div class="widget-card" draggable="true" data-widget-id="' + widget.id + '" data-index="' + index + '" onclick="' + onclickAction + '">';
                 html += '  <div class="widget-icon">';
                 html += '    <svg viewBox="0 0 24 24" class="icon-svg"><path d="' + widget.svg + '"/></svg>';
                 html += '  </div>';
@@ -3307,6 +3341,85 @@
             });
             
             container.innerHTML = html;
+            
+            // Inicializar drag & drop
+            initWidgetDragAndDrop();
+        }
+        
+        // Funcionalidad de drag & drop para widgets
+        let draggedWidget = null;
+        let draggedIndex = null;
+        
+        function initWidgetDragAndDrop() {
+            const widgets = document.querySelectorAll('.widget-card');
+            
+            widgets.forEach(widget => {
+                widget.addEventListener('dragstart', function(e) {
+                    draggedWidget = this;
+                    draggedIndex = parseInt(this.dataset.index);
+                    this.style.opacity = '0.4';
+                    e.dataTransfer.effectAllowed = 'move';
+                });
+                
+                widget.addEventListener('dragend', function() {
+                    this.style.opacity = '1';
+                    
+                    // Remover todas las clases de drag-over
+                    document.querySelectorAll('.widget-card').forEach(w => {
+                        w.classList.remove('drag-over');
+                    });
+                });
+                
+                widget.addEventListener('dragover', function(e) {
+                    if (e.preventDefault) {
+                        e.preventDefault();
+                    }
+                    e.dataTransfer.dropEffect = 'move';
+                    return false;
+                });
+                
+                widget.addEventListener('dragenter', function() {
+                    if (this !== draggedWidget) {
+                        this.classList.add('drag-over');
+                    }
+                });
+                
+                widget.addEventListener('dragleave', function() {
+                    this.classList.remove('drag-over');
+                });
+                
+                widget.addEventListener('drop', function(e) {
+                    if (e.stopPropagation) {
+                        e.stopPropagation();
+                    }
+                    
+                    if (draggedWidget !== this) {
+                        const targetIndex = parseInt(this.dataset.index);
+                        
+                        // Obtener widgets activos
+                        const activeWidgets = AVAILABLE_WIDGETS.filter(w => w.active);
+                        
+                        // Reordenar array
+                        const movedWidget = activeWidgets[draggedIndex];
+                        activeWidgets.splice(draggedIndex, 1);
+                        activeWidgets.splice(targetIndex, 0, movedWidget);
+                        
+                        // Actualizar AVAILABLE_WIDGETS manteniendo los inactivos al final
+                        const inactiveWidgets = AVAILABLE_WIDGETS.filter(w => !w.active);
+                        AVAILABLE_WIDGETS.length = 0;
+                        AVAILABLE_WIDGETS.push(...activeWidgets, ...inactiveWidgets);
+                        
+                        // Guardar nuevo orden
+                        const widgetOrder = activeWidgets.map(w => w.id);
+                        localStorage.setItem('tefy_widgets_order', JSON.stringify(widgetOrder));
+                        
+                        // Re-renderizar
+                        renderWidgetsGrid();
+                    }
+                    
+                    return false;
+                });
+            });
         }
 
         // Inicializar widgets al cargar la página
