@@ -1495,8 +1495,8 @@
             cursor: pointer;
             transition: all 0.2s;
             text-align: center;
-            border: 1px solid var(--border-color);
-            height: 100px; /* Altura fija para consistencia */
+            border: 1.5px solid rgba(255, 255, 255, 0.1);
+            height: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -1506,6 +1506,7 @@
         .widget-card:hover {
             border-color: var(--accent-blue);
             transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
         
         .widget-card.drag-over {
@@ -1516,6 +1517,16 @@
         
         .widget-card[draggable="true"]:active {
             cursor: move;
+        }
+
+        /* Tema claro - bordes más visibles */
+        .light-theme .widget-card {
+            border: 1.5px solid rgba(0, 0, 0, 0.12);
+        }
+
+        .light-theme .widget-card:hover {
+            border-color: var(--accent-blue);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         }
 
         .widget-icon {
