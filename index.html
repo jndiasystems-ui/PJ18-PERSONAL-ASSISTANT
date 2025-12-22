@@ -619,8 +619,8 @@
         .theme-switch {
             position: relative;
             display: inline-block;
-            width: 120px;
-            height: 36px;
+            width: 44px;
+            height: 24px;
             cursor: pointer;
         }
 
@@ -636,63 +636,60 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: #f5f5f5;
-            border-radius: 18px;
+            background: var(--border-color);
+            border-radius: 12px;
             transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 4px;
-            border: 2px solid var(--border-color);
+            padding: 2px;
         }
 
         .theme-label {
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50%;
-            height: 100%;
+            width: 18px;
+            height: 18px;
             z-index: 1;
             transition: all 0.3s;
         }
 
         .theme-label svg {
-            width: 18px;
-            height: 18px;
+            width: 11px;
+            height: 11px;
             transition: all 0.3s;
         }
 
         .theme-label-left svg {
-            stroke: #666;
+            stroke: var(--text-secondary);
         }
 
         .theme-label-right svg {
-            stroke: #666;
+            stroke: var(--text-secondary);
         }
 
-        /* Estado: Light Mode (default) */
+        /* Círculo slider */
         .theme-slider::before {
             content: "";
             position: absolute;
-            height: 28px;
-            width: 56px;
-            left: 4px;
+            height: 20px;
+            width: 20px;
+            left: 2px;
             bottom: 2px;
-            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
-            border-radius: 14px;
+            background: white;
+            border-radius: 50%;
             transition: all 0.3s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
         }
 
-        /* Cuando está checked (Dark Mode) */
+        /* Dark Mode (checked) */
         input:checked + .theme-slider {
-            background: #1a1a2e;
-            border-color: var(--accent-blue);
+            background: var(--accent-blue);
         }
 
         input:checked + .theme-slider::before {
-            transform: translateX(56px);
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transform: translateX(20px);
         }
 
         input:checked + .theme-slider .theme-label-right svg {
@@ -700,20 +697,20 @@
         }
 
         input:not(:checked) + .theme-slider .theme-label-left svg {
-            stroke: #333;
+            stroke: var(--text-primary);
         }
 
         /* Tema claro */
         .light-theme .theme-slider {
-            background: #ffffff;
+            background: #d1d5db;
         }
 
         .light-theme .theme-label-left svg {
-            stroke: #333;
+            stroke: #4b5563;
         }
 
         .light-theme .theme-label-right svg {
-            stroke: #999;
+            stroke: #9ca3af;
         }
 
         /* MAIN CONTENT - 3 PANELS */
@@ -1484,8 +1481,11 @@
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            max-height: calc(100vh - 220px); /* Espacio para header y resumen */
-            align-items: start; /* Evita que se estiren verticalmente */
+            max-height: calc(100vh - 220px);
+            align-content: start;
+            grid-auto-rows: 100px;
+        }
+            align-content: start; /* Alinea todo arriba */
         }
 
         .widget-card {
