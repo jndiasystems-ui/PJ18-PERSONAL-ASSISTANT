@@ -1379,16 +1379,22 @@
             overflow-y: auto;
             overflow-x: hidden;
             max-height: calc(100vh - 220px); /* Espacio para header y resumen */
+            align-items: start; /* Evita que se estiren verticalmente */
         }
 
         .widget-card {
             background: var(--tertiary-dark);
             border-radius: 10px;
             padding: 12px;
-            cursor: move;
+            cursor: pointer;
             transition: all 0.2s;
             text-align: center;
             border: 1px solid transparent;
+            height: 100px; /* Altura fija para consistencia */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
 
         .widget-card:hover {
@@ -1402,7 +1408,7 @@
             transform: scale(1.05);
         }
         
-        .widget-card[draggable="true"] {
+        .widget-card[draggable="true"]:active {
             cursor: move;
         }
 
@@ -2308,26 +2314,43 @@
             <div class="app-logo">
                 <svg viewBox="0 0 100 100" class="icon-svg" style="width: 38px; height: 38px;">
                     <defs>
-                        <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <linearGradient id="logoGradientHeader" x1="0%" y1="0%" x2="100%" y2="100%">
                             <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
                             <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
+                        </linearGradient>
+                        <linearGradient id="logoGlowHeader" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.3" />
+                            <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
                         </linearGradient>
                     </defs>
                     
-                    <!-- Círculo exterior con gradiente -->
-                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradient)" stroke-width="3"/>
+                    <!-- Hexágono exterior -->
+                    <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
+                          fill="none" stroke="url(#logoGradientHeader)" stroke-width="3"/>
                     
-                    <!-- Forma de "T" estilizada tecnológica -->
-                    <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradient)"/>
+                    <!-- Chip central -->
+                    <rect x="35" y="35" width="30" height="30" rx="4" 
+                          fill="url(#logoGradientHeader)" opacity="0.8"/>
                     
-                    <!-- Puntos de circuito tecnológico -->
-                    <circle cx="30" cy="60" r="3" fill="#667eea"/>
-                    <circle cx="70" cy="60" r="3" fill="#667eea"/>
-                    <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
+                    <!-- Letra "T" central -->
+                    <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
+                          fill="white"/>
                     
-                    <!-- Líneas de conexión -->
-                    <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
-                    <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                    <!-- Conectores tipo circuito -->
+                    <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientHeader)" stroke-width="2"/>
+                    <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientHeader)" stroke-width="2"/>
+                    <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientHeader)" stroke-width="2"/>
+                    <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientHeader)" stroke-width="2"/>
+                    
+                    <!-- Nodos en las esquinas -->
+                    <circle cx="20" cy="50" r="3" fill="#667eea"/>
+                    <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
+                    <circle cx="50" cy="20" r="3" fill="#764ba2"/>
+                    <circle cx="50" cy="80" r="3" fill="#667eea"/>
+                    
+                    <!-- Efecto de brillo -->
+                    <ellipse cx="50" cy="40" rx="15" ry="10" fill="url(#logoGlowHeader)" opacity="0.4"/>
                 </svg>
                 <span>Tefy AI</span>
             </div>
@@ -2722,16 +2745,24 @@
                         <defs>
                             <linearGradient id="logoGradientChat" x1="0%" y1="0%" x2="100%" y2="100%">
                                 <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
                                 <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
                             </linearGradient>
                         </defs>
-                        <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradientChat)" stroke-width="3"/>
-                        <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradientChat)"/>
-                        <circle cx="30" cy="60" r="3" fill="#667eea"/>
-                        <circle cx="70" cy="60" r="3" fill="#667eea"/>
-                        <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
-                        <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
-                        <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                        <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
+                              fill="none" stroke="url(#logoGradientChat)" stroke-width="3"/>
+                        <rect x="35" y="35" width="30" height="30" rx="4" 
+                              fill="url(#logoGradientChat)" opacity="0.8"/>
+                        <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
+                              fill="white"/>
+                        <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientChat)" stroke-width="2"/>
+                        <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientChat)" stroke-width="2"/>
+                        <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientChat)" stroke-width="2"/>
+                        <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientChat)" stroke-width="2"/>
+                        <circle cx="20" cy="50" r="3" fill="#667eea"/>
+                        <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
+                        <circle cx="50" cy="20" r="3" fill="#764ba2"/>
+                        <circle cx="50" cy="80" r="3" fill="#667eea"/>
                     </svg>
                     <span>Chat con Tefy AI</span>
                 </div>
@@ -2745,16 +2776,24 @@
                                     <defs>
                                         <linearGradient id="logoGradientAvatar" x1="0%" y1="0%" x2="100%" y2="100%">
                                             <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+                                            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
                                             <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
                                         </linearGradient>
                                     </defs>
-                                    <circle cx="50" cy="50" r="45" fill="none" stroke="url(#logoGradientAvatar)" stroke-width="3"/>
-                                    <path d="M 30 25 L 70 25 L 70 32 L 55 32 L 55 75 L 45 75 L 45 32 L 30 32 Z" fill="url(#logoGradientAvatar)"/>
-                                    <circle cx="30" cy="60" r="3" fill="#667eea"/>
-                                    <circle cx="70" cy="60" r="3" fill="#667eea"/>
-                                    <circle cx="50" cy="20" r="2.5" fill="#4A6BFF"/>
-                                    <line x1="30" y1="60" x2="45" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
-                                    <line x1="55" y1="60" x2="70" y2="60" stroke="#667eea" stroke-width="1.5" opacity="0.6"/>
+                                    <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
+                                          fill="none" stroke="url(#logoGradientAvatar)" stroke-width="3"/>
+                                    <rect x="35" y="35" width="30" height="30" rx="4" 
+                                          fill="url(#logoGradientAvatar)" opacity="0.8"/>
+                                    <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
+                                          fill="white"/>
+                                    <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
+                                    <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
+                                    <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
+                                    <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
+                                    <circle cx="20" cy="50" r="3" fill="#667eea"/>
+                                    <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
+                                    <circle cx="50" cy="20" r="3" fill="#764ba2"/>
+                                    <circle cx="50" cy="80" r="3" fill="#667eea"/>
                                 </svg>
                             </div>
                             <div>
