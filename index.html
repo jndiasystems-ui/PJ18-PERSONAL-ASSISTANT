@@ -1664,20 +1664,20 @@
         /* Métricas Grid */
         .dashboard-metrics {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 12px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 7px;
+            margin-bottom: 10px;
         }
 
         .metric-item {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-color);
             border-radius: 8px;
-            padding: 8px 6px;
+            padding: 7px 5px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
             transition: all 0.2s;
             cursor: pointer;
         }
@@ -1689,7 +1689,7 @@
         }
 
         .metric-icon {
-            font-size: 16px;
+            font-size: 14px;
             line-height: 1;
             display: flex;
             align-items: center;
@@ -1699,8 +1699,8 @@
         .metric-icon svg {
             color: var(--accent-blue);
             stroke: var(--accent-blue);
-            width: 18px;
-            height: 18px;
+            width: 16px;
+            height: 16px;
         }
 
         .metric-content {
@@ -1708,19 +1708,19 @@
         }
 
         .metric-value {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--accent-blue);
             line-height: 1;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
             transition: transform 0.2s ease;
         }
 
         .metric-label {
-            font-size: 8px;
+            font-size: 7px;
             color: var(--text-secondary);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.4px;
         }
 
         /* Botón de actualizar */
@@ -2616,46 +2616,9 @@
             </button>
 
             <div class="app-logo">
-                <svg viewBox="0 0 100 100" class="icon-svg" style="width: 38px; height: 38px;">
-                    <defs>
-                        <linearGradient id="logoGradientHeader" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
-                            <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
-                        </linearGradient>
-                        <linearGradient id="logoGlowHeader" x1="0%" y1="0%" x2="100%" y2="100%">
-                            <stop offset="0%" style="stop-color:#fff;stop-opacity:0.3" />
-                            <stop offset="100%" style="stop-color:#fff;stop-opacity:0" />
-                        </linearGradient>
-                    </defs>
-                    
-                    <!-- Hexágono exterior -->
-                    <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
-                          fill="none" stroke="url(#logoGradientHeader)" stroke-width="3"/>
-                    
-                    <!-- Chip central -->
-                    <rect x="35" y="35" width="30" height="30" rx="4" 
-                          fill="url(#logoGradientHeader)" opacity="0.8"/>
-                    
-                    <!-- Letra "T" central -->
-                    <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
-                          fill="white"/>
-                    
-                    <!-- Conectores tipo circuito -->
-                    <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientHeader)" stroke-width="2"/>
-                    <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientHeader)" stroke-width="2"/>
-                    <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientHeader)" stroke-width="2"/>
-                    <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientHeader)" stroke-width="2"/>
-                    
-                    <!-- Nodos en las esquinas -->
-                    <circle cx="20" cy="50" r="3" fill="#667eea"/>
-                    <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
-                    <circle cx="50" cy="20" r="3" fill="#764ba2"/>
-                    <circle cx="50" cy="80" r="3" fill="#667eea"/>
-                    
-                    <!-- Efecto de brillo -->
-                    <ellipse cx="50" cy="40" rx="15" ry="10" fill="url(#logoGlowHeader)" opacity="0.4"/>
-                </svg>
+                <img src="data:image/png;base64,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" 
+                     alt="Tefy AI Logo" 
+                     style="width: 32px; height: 32px; object-fit: contain;">
                 <span>Tefy AI</span>
             </div>
 
@@ -3090,29 +3053,9 @@
             <!-- CENTER PANEL - CHAT -->
             <main class="panel panel-center">
                 <div class="panel-header" style="justify-content: flex-start;">
-                    <svg viewBox="0 0 100 100" class="icon-svg" style="width: 26px; height: 26px; margin-right: 8px;">
-                        <defs>
-                            <linearGradient id="logoGradientChat" x1="0%" y1="0%" x2="100%" y2="100%">
-                                <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                                <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
-                                <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
-                            </linearGradient>
-                        </defs>
-                        <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
-                              fill="none" stroke="url(#logoGradientChat)" stroke-width="3"/>
-                        <rect x="35" y="35" width="30" height="30" rx="4" 
-                              fill="url(#logoGradientChat)" opacity="0.8"/>
-                        <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
-                              fill="white"/>
-                        <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientChat)" stroke-width="2"/>
-                        <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientChat)" stroke-width="2"/>
-                        <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientChat)" stroke-width="2"/>
-                        <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientChat)" stroke-width="2"/>
-                        <circle cx="20" cy="50" r="3" fill="#667eea"/>
-                        <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
-                        <circle cx="50" cy="20" r="3" fill="#764ba2"/>
-                        <circle cx="50" cy="80" r="3" fill="#667eea"/>
-                    </svg>
+                    <img src="data:image/png;base64,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" 
+                         alt="Tefy AI" 
+                         style="width: 28px; height: 28px; margin-right: 8px; object-fit: contain;">
                     <span>Chat con Tefy AI</span>
                 </div>
 
@@ -3121,29 +3064,9 @@
                     <div class="message ai">
                         <div class="message ai">
                             <div class="message-avatar">
-                                <svg viewBox="0 0 100 100" style="width: 32px; height: 32px;">
-                                    <defs>
-                                        <linearGradient id="logoGradientAvatar" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-                                            <stop offset="50%" style="stop-color:#764ba2;stop-opacity:1" />
-                                            <stop offset="100%" style="stop-color:#4A6BFF;stop-opacity:1" />
-                                        </linearGradient>
-                                    </defs>
-                                    <path d="M 50 5 L 85 27.5 L 85 72.5 L 50 95 L 15 72.5 L 15 27.5 Z" 
-                                          fill="none" stroke="url(#logoGradientAvatar)" stroke-width="3"/>
-                                    <rect x="35" y="35" width="30" height="30" rx="4" 
-                                          fill="url(#logoGradientAvatar)" opacity="0.8"/>
-                                    <path d="M 42 42 L 58 42 L 58 46 L 52 46 L 52 58 L 48 58 L 48 46 L 42 46 Z" 
-                                          fill="white"/>
-                                    <line x1="35" y1="50" x2="20" y2="50" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
-                                    <line x1="65" y1="50" x2="80" y2="50" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
-                                    <line x1="50" y1="35" x2="50" y2="20" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
-                                    <line x1="50" y1="65" x2="50" y2="80" stroke="url(#logoGradientAvatar)" stroke-width="2"/>
-                                    <circle cx="20" cy="50" r="3" fill="#667eea"/>
-                                    <circle cx="80" cy="50" r="3" fill="#4A6BFF"/>
-                                    <circle cx="50" cy="20" r="3" fill="#764ba2"/>
-                                    <circle cx="50" cy="80" r="3" fill="#667eea"/>
-                                </svg>
+                                <img src="data:image/png;base64,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" 
+                                     alt="Tefy AI" 
+                                     style="width: 32px; height: 32px; object-fit: contain;">
                             </div>
                             <div>
                                 <div class="message-content">
@@ -3158,15 +3081,9 @@
                     <!-- Typing Indicator como mensaje separado -->
                     <div class="message ai typing-indicator" id="typingIndicator" style="display: none;">
                         <div class="message-avatar">
-                            <svg viewBox="0 0 200 200" style="width: 36px; height: 36px;">
-                                <circle cx="100" cy="95" r="75" fill="none" stroke="#1da1f2" stroke-width="12"/>
-                                <circle cx="100" cy="95" r="60" fill="none" stroke="#2c3e50" stroke-width="8"/>
-                                <rect x="35" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                                <rect x="145" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                                <path d="M 55 75 Q 100 40 145 75" fill="none" stroke="#1da1f2" stroke-width="14" stroke-linecap="round"/>
-                                <path d="M 100 120 Q 105 140 120 145" fill="none" stroke="#2c3e50" stroke-width="10" stroke-linecap="round"/>
-                                <ellipse cx="125" cy="147" rx="8" ry="10" fill="#2c3e50"/>
-                            </svg>
+                            <img src="data:image/png;base64,UklGRnIHAABXRUJQVlA4WAoAAAAgAAAA8wEA8wEASUNDUMgBAAAAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADZWUDgghAUAANBKAJ0BKvQB9AE+USiTRyOioaGg16gAcAoJaW7hdrEe+P/SYGdx/xZ4QHtF8UD9E+uz5gPAz64D+q9Zn6AHlueyF+5XpAapfU+s9gWfG1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9G1DnGUA91N9GxFumfTXkPpslFoMctjYBsbdTfRtQ5xlAPcBEED8bugTFnga3dn/FE5SS35k4IA5GX0Hw35rLSxtQ5xlANAPZJvmgN+dgAodY+30Ami4C0v4vrtbgK490Gii4obpGLqb6NpYJTUdTFmhOxEsuJnICg63mMeh5TmN+zWN9G1DnFxAifQdvWjykG5nid8lD4KisfeGjRFusBG+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjKAe6m+jahzjJ3AA/v/iWAAAAAAAAAAAAAAC3gt2zdT4pqlr6v22Fz9mxHlLTD+0G9H/qnj3Fg6xXengwVmnidbKA1HeS7def9u3nnuM1SgQQAxZQDL55OtIziWE+BggEOpeyc9nTlR/jqB5mhvyWvWhdy8p/Nfemv2lEyEp2FrMyLPE02pR3k0/lkeX3mYlU2WQ6QpJzyjCWCupL6wKiygHjD23iPjuQw3moeJ916oWYQPYnWvv36xWAO3sI3U2kcQcHqDFRTCqrrRS+gL2+GyB1GQwQ6Qxz0+y1/LV3t9ndE4CZHP2iSw7hMp2pXXV1m0DM9EfjygZi3FSvzDxYGlChrf3MLQz+7BEQGOnrC3iQhYgsKWiMiXX/g0NB3qzX/aNlZmtNIyjdIoqHNhrTLRx9nGS5RBEGvQwwPAovKX+VfypuKFKdi+MgE+XjRZ62tYx04yf/zkQXFS1RfOpO92R5zT5CO98ZffgEV1CSqz+dw1ih8HMfh/PH+iX95UcE/w8Tm338CslVSA/elPi1+GHRuxGMpJX0wME5I7jwZXhtZsEEXIUbJaQAxT0wOyAi7CewoLAy3/uLGqcL0TU7FGp75WI7Ef5tbY205IuYKkelxK1h89YVKM1MkX8mgywTPHO1/62ljOkxArwjwJ/t1SqnW76p3yGdX9gwnYyjOtomYGcNYbVQnIbvw404NnPSHf8kVWKUfx5vx4HvgIu1xJ+B7PHrcrYZX5GqCc5MLyFcE00mFVjsh3q8UQ7ksY6Xe0UBWoB4bPnFMfARPdK0Aa7BSBQvzUFpyrUhJerh2Z+RjflhfbjMveDf5iIAXXi4+pnRohjJv3Jbz7mxHMQirBDWc/gLKZnGMjJhvRGaWFvJ22ooRLgyV7ehKPIda1vdESnY6T5cVW5kQRPqgzK3mnbV87quZLvMoTXllnMmJQje4RodLVp5EMxtXbehCfJ/7W7GvN8UzwWeOUkEvLo6FB0yumPf8RqqFApf6P7NyM24x5GZlfXUcg5h24W/+pAsyYSKyRD5J/t0oEYs+tXNsZYipNtIvMjj0PgCNWRClgAAAAAAAAAAAAAAAAAAAAA" 
+                                 alt="Tefy AI" 
+                                 style="width: 32px; height: 32px; object-fit: contain;">
                         </div>
                         <div class="message-content">
                             <div class="typing-dots">
@@ -3351,24 +3268,26 @@
 
                     <!-- Métricas rápidas -->
                     <div class="dashboard-metrics">
-                        <!-- Tareas Pendientes -->
-                        <div class="metric-item" id="tasksMetric" onclick="showTasksInChat()" title="Click para ver tareas">
+                        <!-- Eventos de Hoy -->
+                        <div class="metric-item" id="eventsMetric" onclick="showEventsInChat()" title="Click para ver eventos de hoy">
                             <div class="metric-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 11 12 14 22 4"/>
-                                    <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                                    <line x1="3" y1="10" x2="21" y2="10"></line>
                                 </svg>
                             </div>
                             <div class="metric-content">
-                                <div class="metric-value" id="tasksCount">0</div>
-                                <div class="metric-label">Tareas</div>
+                                <div class="metric-value" id="eventsCount">0</div>
+                                <div class="metric-label">Eventos</div>
                             </div>
                         </div>
 
                         <!-- Emails sin leer -->
                         <div class="metric-item" id="emailsMetric" onclick="openGmail()" title="Click para abrir Gmail" style="display: none;">
                             <div class="metric-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                                     <polyline points="22,6 12,13 2,6"/>
                                 </svg>
@@ -3379,20 +3298,31 @@
                             </div>
                         </div>
 
-                        <!-- Cumpleaños hoy -->
-                        <div class="metric-item" id="birthdaysMetric" onclick="showBirthdaysInChat()" title="Click para ver cumpleaños">
+                        <!-- Recordatorios -->
+                        <div class="metric-item" id="remindersMetric" onclick="showRemindersInChat()" title="Click para ver recordatorios">
                             <div class="metric-icon">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="3" y="8" width="18" height="4" rx="1"/>
-                                    <path d="M12 2v6"/>
-                                    <path d="M8 2v2"/>
-                                    <path d="M16 2v2"/>
-                                    <path d="M3 12v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                    <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
                                 </svg>
                             </div>
                             <div class="metric-content">
-                                <div class="metric-value" id="birthdaysCount">0</div>
-                                <div class="metric-label">Cumpleaños</div>
+                                <div class="metric-value" id="remindersCount">0</div>
+                                <div class="metric-label">Recordatorios</div>
+                            </div>
+                        </div>
+
+                        <!-- Eventos Pasados -->
+                        <div class="metric-item" id="pastEventsMetric" onclick="showPastEventsInChat()" title="Click para ver eventos pasados">
+                            <div class="metric-icon">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"/>
+                                    <polyline points="12 6 12 12 16 14"/>
+                                </svg>
+                            </div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="pastEventsCount">0</div>
+                                <div class="metric-label">Pasados</div>
                             </div>
                         </div>
                     </div>
@@ -4134,6 +4064,7 @@
 
         let tokenClient;
         let accessToken = null;
+        let cachedCalendarEvents = []; // Almacenar eventos para actualizar solo el tiempo
 
         // Inicializar Google Identity Services
         function initGoogleAuth() {
@@ -5292,6 +5223,7 @@
                 ]);
                 
                 // Actualizar próximo evento
+                cachedCalendarEvents = calendarEvents || []; // Guardar en caché
                 updateNextEvent(calendarEvents);
                 
                 // Actualizar tareas pendientes
@@ -5383,6 +5315,19 @@
             timeElement.textContent = timeText;
             titleElement.textContent = `${nextEvent.summary || 'Sin título'} - ${eventTimeString}`;
             cardElement.style.opacity = '1';
+        }
+
+        /**
+         * Actualizar SOLO el tiempo del próximo evento (sin llamar APIs)
+         * Se ejecuta cada minuto para mantener el contador preciso
+         */
+        function updateNextEventTimeOnly() {
+            // Usar eventos cacheados en memoria (sin llamadas a API)
+            if (!cachedCalendarEvents || cachedCalendarEvents.length === 0) {
+                return; // No hay datos cacheados
+            }
+            
+            updateNextEvent(cachedCalendarEvents);
         }
 
         /**
@@ -5627,7 +5572,10 @@
         // Actualizar fecha cada minuto
         setInterval(updateDashboardDate, 60000);
 
-        // Actualizar dashboard cada 5 minutos
+        // Actualizar SOLO el tiempo del próximo evento cada minuto (sin APIs)
+        setInterval(updateNextEventTimeOnly, 60000);
+
+        // Actualizar dashboard completo cada 5 minutos (con APIs)
         setInterval(updateSmartDashboard, 300000);
 
         // ==========================================
@@ -6301,15 +6249,9 @@
             const avatar = sender === 'user'
                 ? `<div class="message-avatar">${userInitials}</div>`
                 : `<div class="message-avatar">
-                    <svg viewBox="0 0 200 200" style="width: 36px; height: 36px;">
-                        <circle cx="100" cy="95" r="75" fill="none" stroke="#1da1f2" stroke-width="12"/>
-                        <circle cx="100" cy="95" r="60" fill="none" stroke="#2c3e50" stroke-width="8"/>
-                        <rect x="35" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                        <rect x="145" y="75" width="20" height="45" rx="10" fill="#2c3e50"/>
-                        <path d="M 55 75 Q 100 40 145 75" fill="none" stroke="#1da1f2" stroke-width="14" stroke-linecap="round"/>
-                        <path d="M 100 120 Q 105 140 120 145" fill="none" stroke="#2c3e50" stroke-width="10" stroke-linecap="round"/>
-                        <ellipse cx="125" cy="147" rx="8" ry="10" fill="#2c3e50"/>
-                    </svg>
+                    <img src="data:image/png;base64,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" 
+                         alt="Tefy AI" 
+                         style="width: 32px; height: 32px; object-fit: contain;">
                 </div>`;
 
             const time = getCurrentTime();
