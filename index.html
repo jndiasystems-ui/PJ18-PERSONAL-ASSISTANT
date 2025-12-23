@@ -1211,6 +1211,7 @@
         }
 
         .folders-list,
+        .favorites-list,
         .recent-files-list,
         .trash-list {
             padding: 8px;
@@ -1238,6 +1239,25 @@
 
         .folders-list::-webkit-scrollbar-thumb:hover {
             background: rgba(154, 160, 166, 0.5);
+        }
+
+        /* Scrollbar para FAVORITOS - Grosor medio, tono dorado sutil */
+        .favorites-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .favorites-list::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 3px;
+        }
+
+        .favorites-list::-webkit-scrollbar-thumb {
+            background: rgba(154, 160, 166, 0.35);
+            border-radius: 3px;
+        }
+
+        .favorites-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(154, 160, 166, 0.55);
         }
 
         /* Scrollbar para ARCHIVOS RECIENTES - Grosor estándar, opacidad diferente */
@@ -1298,6 +1318,42 @@
 
         .trash-icon {
             font-size: 16px;
+        }
+
+        /* EMPTY STATE para listas vacías */
+        .empty-state {
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        /* Icono de estrella para favoritos */
+        .favorite-icon {
+            position: absolute;
+            top: 50%;
+            right: 8px;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            fill: var(--text-secondary);
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .folder-header,
+        .file-item-nested {
+            position: relative;
+        }
+
+        .folder-item.is-favorite .favorite-icon,
+        .folder-header:has(+ *) .favorite-icon,
+        .file-item-nested .favorite-icon,
+        .favorite-icon {
+            fill: #d4af37;
+            opacity: 0.7;
         }
 
         /* CENTER PANEL - CHAT */
@@ -2869,7 +2925,7 @@
 
             <div class="side-menu-footer">
                 Tefy AI v2.2 - Asistente Personal<br>
-                © 2026 JND AI SYSTEMS
+                © 2024 JND AI SYSTEMS
             </div>
         </div>
 
@@ -2936,6 +2992,13 @@
                 </svg>
                 <span>Abrir</span>
             </div>
+            <div class="context-menu-item" id="contextFavorite">
+                <svg viewBox="0 0 24 24" class="icon-svg-sm">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+                <span id="contextFavoriteText">Agregar a favoritos</span>
+            </div>
+            <div class="context-menu-divider"></div>
             <div class="context-menu-item" id="contextHide">
                 <svg viewBox="0 0 24 24" class="icon-svg-sm">
                     <path
@@ -3076,6 +3139,28 @@
                                 </svg>
                             </span>
                             <span class="folder-name">Cargando...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN FAVORITOS -->
+                <div class="section-title" onclick="toggleSection('favorites')">
+                    <span class="section-toggle" id="favorites-toggle">▼</span>
+                    <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;">
+                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                    </svg>
+                    <span>Favoritos</span>
+                </div>
+                <div class="section-content" id="favorites-content">
+                    <div class="favorites-list folder-list">
+                        <div class="empty-state" id="favoritesEmptyState">
+                            <svg viewBox="0 0 24 24" style="width: 48px; height: 48px; fill: var(--text-secondary); opacity: 0.3; margin-bottom: 8px;">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                            <p style="color: var(--text-secondary); font-size: 13px; text-align: center;">
+                                Sin favoritos aún<br>
+                                <span style="font-size: 11px; opacity: 0.7;">Haz clic derecho en una carpeta para agregarla</span>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -3579,11 +3664,11 @@
             closeSideMenu();
             const message = `
 ╔════════════════════════════════════════╗
-║        🤖 TEFY AI - ASISTENTE PERSONAL        ║
+║        🤖 STEFY - ASISTENTE PERSONAL        ║
 ╠════════════════════════════════════════╣
 ║                                        ║
 ║  Versión: 2.2                         ║
-║  Fecha: Enero 2026                ║
+║  Fecha: Diciembre 2024                ║
 ║                                        ║
 ║  Desarrollado por:                    ║
 ║  JND AI SYSTEMS                       ║
@@ -4281,7 +4366,7 @@
         }
 
         function restoreSectionStates() {
-            ['folders', 'recent', 'trash'].forEach(sectionName => {
+            ['folders', 'favorites', 'recent', 'trash'].forEach(sectionName => {
                 const state = localStorage.getItem(`section_${sectionName}`);
                 if (state === 'collapsed') {
                     const content = document.getElementById(`${sectionName}-content`);
@@ -4591,12 +4676,16 @@
 
             foldersContainer.innerHTML = visibleFolders.map(folder => {
                 const folderName = escapeHtml(folder.name);
+                const isFavorite = isFolderFavorite(folder.id);
+                const favoriteIcon = isFavorite ? '<svg viewBox="0 0 24 24" class="favorite-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>' : '';
+                
                 return `
                     <div class="folder-tree-item" data-folder-id="${folder.id}">
                         <div class="folder-header" onclick="toggleFolder('${folder.id}', '${folderName.replace(/'/g, "\\'")}');" oncontextmenu="showContextMenu(event, '${folder.id}', '${folderName.replace(/'/g, "\\'")}', 'folder'); return false;">
                             <span class="folder-toggle">▶</span>
                             <span class="folder-icon"><svg viewBox="0 0 24 24" class="icon-svg-sm" style="color: #9aa0a6;"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></span>
                             <span class="folder-name">${folderName}</span>
+                            ${favoriteIcon}
                         </div>
                         <div class="folder-contents" id="folder-${folder.id}">
                             <div class="folder-loading">Cargando...</div>
@@ -4694,12 +4783,16 @@
             // Primero mostrar subcarpetas expandibles
             folders.forEach(folder => {
                 const folderName = escapeHtml(folder.name);
+                const isFavorite = isFolderFavorite(folder.id);
+                const favoriteIcon = isFavorite ? '<svg viewBox="0 0 24 24" class="favorite-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>' : '';
+                
                 html += `
                     <div class="folder-tree-item" data-folder-id="${folder.id}" style="margin-left: 0;">
                         <div class="folder-header" onclick="toggleFolder('${folder.id}', '${folderName.replace(/'/g, "\\'")}'); event.stopPropagation();" oncontextmenu="showContextMenu(event, '${folder.id}', '${folderName.replace(/'/g, "\\'")}', 'folder'); return false;">
                             <span class="folder-toggle">▶</span>
                             <span class="folder-icon"><svg viewBox="0 0 24 24" class="icon-svg-sm" style="color: #9aa0a6;"><path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/></svg></span>
                             <span class="folder-name">${folderName}</span>
+                            ${favoriteIcon}
                         </div>
                         <div class="folder-contents" id="folder-${folder.id}">
                             <div class="folder-loading">Cargando...</div>
@@ -4712,10 +4805,14 @@
             regularFiles.forEach(file => {
                 const icon = getFileIcon(file.mimeType);
                 const fileName = escapeHtml(file.name);
+                const isFavorite = isItemFavorite(file.id);
+                const favoriteIcon = isFavorite ? '<svg viewBox="0 0 24 24" class="favorite-icon"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" /></svg>' : '';
+                
                 html += `
-                    <div class="file-item-nested" onclick="openFileInPanel('${file.id}', '${fileName.replace(/'/g, "\\'")}', '${file.mimeType}')" oncontextmenu="showContextMenu(event, '${file.id}', '${fileName.replace(/'/g, "\\'")}', 'file'); return false;">
+                    <div class="file-item-nested" onclick="openFileInPanel('${file.id}', '${fileName.replace(/'/g, "\\'")}', '${file.mimeType}')" oncontextmenu="showContextMenu(event, '${file.id}', '${fileName.replace(/'/g, "\\'")}', 'file', '${file.mimeType}'); return false;">
                         <span class="file-icon">${icon}</span>
                         <span class="file-name">${fileName}</span>
+                        ${favoriteIcon}
                     </div>
                 `;
             });
@@ -5909,14 +6006,23 @@
 
         let contextMenuTarget = null;
 
-        function showContextMenu(event, itemId, itemName, itemType) {
+        function showContextMenu(event, itemId, itemName, itemType, mimeType = '') {
             event.preventDefault();
             event.stopPropagation();
 
             const menu = document.getElementById('contextMenu');
 
-            // Guardar referencia del item
-            contextMenuTarget = { id: itemId, name: itemName, type: itemType };
+            // Guardar referencia del item (incluir mimeType para archivos)
+            contextMenuTarget = { id: itemId, name: itemName, type: itemType, mimeType: mimeType };
+
+            // Actualizar texto del botón de favoritos
+            const favButton = document.getElementById('contextFavorite');
+            const favText = document.getElementById('contextFavoriteText');
+            if (favButton && favText) {
+                const isFavorite = isItemFavorite(itemId);
+                favText.textContent = isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos';
+                favButton.style.display = 'flex';
+            }
 
             // Posicionar menú
             menu.style.left = event.pageX + 'px';
@@ -5974,6 +6080,22 @@
                 contextDelete.addEventListener('click', () => {
                     if (contextMenuTarget) {
                         deleteItem(contextMenuTarget.id, contextMenuTarget.name, contextMenuTarget.type);
+                    }
+                    hideContextMenu();
+                });
+            }
+
+            // FAVORITOS
+            const contextFavorite = document.getElementById('contextFavorite');
+            if (contextFavorite) {
+                contextFavorite.addEventListener('click', () => {
+                    if (contextMenuTarget) {
+                        toggleFavorite(
+                            contextMenuTarget.id, 
+                            contextMenuTarget.name, 
+                            contextMenuTarget.type,
+                            contextMenuTarget.mimeType || ''
+                        );
                     }
                     hideContextMenu();
                 });
@@ -6058,6 +6180,147 @@
         }
 
         // ==========================================
+        // ==========================================
+        // GESTIÓN DE FAVORITOS
+        // ==========================================
+
+        // Verificar si un item (carpeta o archivo) es favorito
+        function isItemFavorite(itemId) {
+            const favorites = getFavorites();
+            return favorites.some(fav => fav.id === itemId);
+        }
+
+        // Mantener compatibilidad con código existente
+        function isFolderFavorite(itemId) {
+            return isItemFavorite(itemId);
+        }
+
+        // Obtener lista de favoritos desde localStorage
+        function getFavorites() {
+            const favoritesJson = localStorage.getItem('tefy_favorites');
+            return favoritesJson ? JSON.parse(favoritesJson) : [];
+        }
+
+        // Guardar favoritos en localStorage
+        function saveFavorites(favorites) {
+            localStorage.setItem('tefy_favorites', JSON.stringify(favorites));
+        }
+
+        // Toggle favorito (agregar o quitar) - funciona para carpetas y archivos
+        function toggleFavorite(itemId, itemName, itemType, mimeType = '') {
+            const favorites = getFavorites();
+            const index = favorites.findIndex(fav => fav.id === itemId);
+
+            if (index > -1) {
+                // Quitar de favoritos
+                favorites.splice(index, 1);
+                console.log('✅ Item quitado de favoritos:', itemName);
+            } else {
+                // Agregar a favoritos
+                const favoriteItem = {
+                    id: itemId,
+                    name: itemName,
+                    type: itemType, // 'folder' o 'file'
+                    addedAt: new Date().toISOString()
+                };
+                
+                // Agregar mimeType solo para archivos
+                if (itemType === 'file' && mimeType) {
+                    favoriteItem.mimeType = mimeType;
+                }
+                
+                favorites.push(favoriteItem);
+                console.log('⭐ Item agregado a favoritos:', itemName);
+            }
+
+            saveFavorites(favorites);
+            renderFavorites();
+            
+            // Refrescar la visualización de carpetas para actualizar los iconos de estrella
+            if (driveFolders && driveFolders.length > 0) {
+                displayFolders(driveFolders);
+            }
+        }
+
+        // Renderizar lista de favoritos
+        function renderFavorites() {
+            const favoritesList = document.querySelector('.favorites-list');
+            const emptyState = document.getElementById('favoritesEmptyState');
+            const favorites = getFavorites();
+
+            if (!favoritesList) return;
+
+            if (favorites.length === 0) {
+                // Mostrar estado vacío
+                if (emptyState) {
+                    emptyState.style.display = 'flex';
+                }
+                // Ocultar otros items
+                const items = favoritesList.querySelectorAll('.folder-tree-item, .file-item-nested');
+                items.forEach(item => item.remove());
+                return;
+            }
+
+            // Ocultar estado vacío
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+
+            // Generar HTML de favoritos
+            let html = '';
+            favorites.forEach(fav => {
+                if (fav.type === 'folder') {
+                    // Renderizar carpeta
+                    html += `
+                        <div class="folder-tree-item">
+                            <div class="folder-header" 
+                                 onclick="toggleFolder('${fav.id}', '${fav.name.replace(/'/g, "\\'")}');" 
+                                 oncontextmenu="showContextMenu(event, '${fav.id}', '${fav.name.replace(/'/g, "\\'")}', 'folder'); return false;">
+                                <span class="folder-toggle">▶</span>
+                                <span class="folder-icon">
+                                    <svg viewBox="0 0 24 24" class="icon-svg-sm">
+                                        <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                                    </svg>
+                                </span>
+                                <span class="folder-name">${fav.name}</span>
+                                <svg viewBox="0 0 24 24" class="favorite-icon">
+                                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                                </svg>
+                            </div>
+                            <div class="folder-contents" id="folder-${fav.id}"></div>
+                        </div>
+                    `;
+                } else {
+                    // Renderizar archivo
+                    const fileIcon = getFileIcon(fav.mimeType || 'application/octet-stream');
+                    html += `
+                        <div class="file-item-nested" 
+                             onclick="openFileInPanel('${fav.id}', '${fav.name.replace(/'/g, "\\'")}', '${fav.mimeType || ''}')" 
+                             oncontextmenu="showContextMenu(event, '${fav.id}', '${fav.name.replace(/'/g, "\\'")}', 'file'); return false;"
+                             style="position: relative;">
+                            <span class="file-icon">${fileIcon}</span>
+                            <span class="file-name">${fav.name}</span>
+                            <svg viewBox="0 0 24 24" class="favorite-icon">
+                                <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                        </div>
+                    `;
+                }
+            });
+
+            favoritesList.innerHTML = html;
+            
+            // Si el estado vacío existe, agregarlo al final
+            if (emptyState && favorites.length === 0) {
+                favoritesList.appendChild(emptyState);
+            }
+        }
+
+        // Cargar favoritos al iniciar
+        window.addEventListener('load', () => {
+            renderFavorites();
+        });
+
         // MENÚ CONTEXTUAL PAPELERA
         // ==========================================
 
