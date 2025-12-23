@@ -3159,7 +3159,7 @@
                             </svg>
                             <p style="color: var(--text-secondary); font-size: 13px; text-align: center;">
                                 Sin favoritos aún<br>
-                                <span style="font-size: 11px; opacity: 0.7;">Haz clic derecho en una carpeta para agregarla</span>
+                                <span style="font-size: 11px; opacity: 0.7;">Haz clic derecho en cualquier carpeta o archivo para agregarlo</span>
                             </p>
                         </div>
                     </div>
@@ -4765,8 +4765,8 @@
         }
 
         // Mostrar archivos dentro de una carpeta
-        function displayFolderFiles(folderId, files) {
-            const contents = document.getElementById(`folder-${folderId}`);
+        function displayFolderFiles(folderId, files, contentsElement = null) {
+            const contents = contentsElement || document.getElementById(`folder-${folderId}`);
             if (!contents) return;
 
             if (files.length === 0) {
@@ -6270,13 +6270,13 @@
             let html = '';
             favorites.forEach(fav => {
                 if (fav.type === 'folder') {
-                    // Renderizar carpeta
+                    // Renderizar carpeta con ID único para favoritos
                     html += `
-                        <div class="folder-tree-item">
+                        <div class="folder-tree-item" data-folder-id="fav-${fav.id}">
                             <div class="folder-header" 
-                                 onclick="toggleFolder('${fav.id}', '${fav.name.replace(/'/g, "\\'")}');" 
+                                 onclick="toggleFavoriteFolder('${fav.id}', '${fav.name.replace(/'/g, "\\'")}');" 
                                  oncontextmenu="showContextMenu(event, '${fav.id}', '${fav.name.replace(/'/g, "\\'")}', 'folder'); return false;">
-                                <span class="folder-toggle">▶</span>
+                                <span class="folder-toggle" id="toggle-fav-${fav.id}">▶</span>
                                 <span class="folder-icon">
                                     <svg viewBox="0 0 24 24" class="icon-svg-sm">
                                         <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
@@ -6287,7 +6287,7 @@
                                     <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
                                 </svg>
                             </div>
-                            <div class="folder-contents" id="folder-${fav.id}"></div>
+                            <div class="folder-contents" id="folder-fav-${fav.id}"></div>
                         </div>
                     `;
                 } else {
@@ -6313,6 +6313,77 @@
             // Si el estado vacío existe, agregarlo al final
             if (emptyState && favorites.length === 0) {
                 favoritesList.appendChild(emptyState);
+            }
+        }
+
+        // Toggle carpeta dentro de favoritos
+        async function toggleFavoriteFolder(folderId, folderName) {
+            const folderItem = document.querySelector(`[data-folder-id="fav-${folderId}"]`);
+            if (!folderItem) return;
+
+            const toggle = folderItem.querySelector(`#toggle-fav-${folderId}`);
+            const contents = folderItem.querySelector(`#folder-fav-${folderId}`);
+
+            if (!toggle || !contents) return;
+
+            // Si ya está expandida, colapsar
+            if (contents.classList.contains('expanded')) {
+                contents.classList.remove('expanded');
+                toggle.classList.remove('expanded');
+                toggle.textContent = '▶';
+                return;
+            }
+
+            // Expandir
+            toggle.classList.add('expanded');
+            toggle.textContent = '▼';
+            contents.classList.add('expanded');
+
+            // Si ya están cacheados los archivos, no recargar
+            if (folderFilesCache[folderId]) {
+                displayFolderFiles(folderId, folderFilesCache[folderId], contents);
+                return;
+            }
+
+            // Cargar archivos de la carpeta
+            await loadFolderFilesForFavorites(folderId, contents);
+        }
+
+        // Cargar archivos para carpeta en favoritos
+        async function loadFolderFilesForFavorites(folderId, contentsElement) {
+            if (!accessToken) return;
+
+            try {
+                contentsElement.innerHTML = '<div class="folder-loading">Cargando...</div>';
+
+                const response = await fetch(
+                    `https://www.googleapis.com/drive/v3/files?q='${folderId}' in parents and trashed=false&fields=files(id,name,mimeType,modifiedTime)&orderBy=folder,name`,
+                    {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    }
+                );
+
+                if (response.status === 401) {
+                    handleTokenExpired();
+                    return;
+                }
+
+                if (!response.ok) {
+                    throw new Error(`Error ${response.status}`);
+                }
+
+                const data = await response.json();
+                const files = data.files || [];
+
+                // Cachear para no recargar
+                folderFilesCache[folderId] = files;
+
+                displayFolderFiles(folderId, files, contentsElement);
+            } catch (error) {
+                console.error('Error cargando archivos de carpeta favorita:', error);
+                contentsElement.innerHTML = '<div class="folder-loading" style="color: var(--error-red);">Error al cargar</div>';
             }
         }
 
