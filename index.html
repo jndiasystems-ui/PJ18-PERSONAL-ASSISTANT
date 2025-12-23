@@ -1131,6 +1131,11 @@
             display: none;
             padding-left: 24px;
             margin-top: 2px;
+            margin-bottom: 4px;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            border-left: 1px solid rgba(154, 160, 166, 0.15);
+            background: rgba(248, 249, 250, 0.02);
         }
 
         .folder-contents.expanded {
@@ -1195,6 +1200,9 @@
             max-height: 400px;
             overflow: hidden;
             transition: max-height 0.3s ease-out, opacity 0.3s;
+            padding-bottom: 8px;
+            margin-bottom: 8px;
+            border-bottom: 1px solid rgba(154, 160, 166, 0.08);
         }
 
         .section-content.collapsed {
@@ -1208,19 +1216,66 @@
             padding: 8px;
             max-height: 400px;
             overflow-y: auto;
+            margin: 4px 4px 8px 4px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.02);
         }
 
-        .folders-list::-webkit-scrollbar,
-        .recent-files-list::-webkit-scrollbar,
-        .trash-list::-webkit-scrollbar {
+        /* Scrollbar para CARPETAS - Grosor medio */
+        .folders-list::-webkit-scrollbar {
             width: 6px;
         }
 
-        .folders-list::-webkit-scrollbar-thumb,
-        .recent-files-list::-webkit-scrollbar-thumb,
-        .trash-list::-webkit-scrollbar-thumb {
-            background: var(--border-color);
+        .folders-list::-webkit-scrollbar-track {
+            background: transparent;
             border-radius: 3px;
+        }
+
+        .folders-list::-webkit-scrollbar-thumb {
+            background: rgba(154, 160, 166, 0.3);
+            border-radius: 3px;
+        }
+
+        .folders-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(154, 160, 166, 0.5);
+        }
+
+        /* Scrollbar para ARCHIVOS RECIENTES - Grosor estándar, opacidad diferente */
+        .recent-files-list::-webkit-scrollbar {
+            width: 5px;
+        }
+
+        .recent-files-list::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 2.5px;
+        }
+
+        .recent-files-list::-webkit-scrollbar-thumb {
+            background: rgba(154, 160, 166, 0.25);
+            border-radius: 2.5px;
+        }
+
+        .recent-files-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(154, 160, 166, 0.45);
+        }
+
+        /* Scrollbar para PAPELERA - Grosor fino */
+        .trash-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .trash-list::-webkit-scrollbar-track {
+            background: transparent;
+            border-radius: 2px;
+        }
+
+        .trash-list::-webkit-scrollbar-thumb {
+            background: rgba(154, 160, 166, 0.2);
+            border-radius: 2px;
+        }
+
+        .trash-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(154, 160, 166, 0.4);
         }
 
         .trash-item {
