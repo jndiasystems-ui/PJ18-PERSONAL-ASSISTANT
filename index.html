@@ -1542,7 +1542,8 @@
             font-weight: 500;
         }
 
-        .quick-summary {
+        /* SMART DASHBOARD */
+        .smart-dashboard {
             margin: 0;
             padding: 16px;
             background: var(--tertiary-dark);
@@ -1553,30 +1554,160 @@
             z-index: 10;
         }
 
-        .summary-title {
+        .dashboard-header {
+            margin-bottom: 12px;
+        }
+
+        .dashboard-title {
             font-size: 14px;
             font-weight: 600;
-            margin-bottom: 12px;
             display: flex;
             align-items: center;
             gap: 8px;
+            margin-bottom: 4px;
         }
 
-        .summary-item {
+        .dashboard-date {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Card de Próximo Evento */
+        .dashboard-card {
+            background: linear-gradient(135deg, rgba(74, 107, 255, 0.15), rgba(102, 126, 234, 0.1));
+            border: 1px solid rgba(74, 107, 255, 0.3);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 12px;
             display: flex;
-            justify-content: space-between;
-            padding: 8px 0;
-            font-size: 13px;
-            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            gap: 12px;
         }
 
-        .summary-item:last-child {
-            border-bottom: none;
+        .card-icon {
+            font-size: 24px;
+            line-height: 1;
         }
 
-        .summary-value {
+        .card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 2px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card-value {
+            font-size: 16px;
+            font-weight: 700;
             color: var(--accent-blue);
+            margin-bottom: 2px;
+        }
+
+        .card-detail {
+            font-size: 12px;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Métricas Grid */
+        .dashboard-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .metric-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 10px 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .metric-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-blue);
+            transform: translateY(-2px);
+        }
+
+        .metric-icon {
+            font-size: 20px;
+            line-height: 1;
+        }
+
+        .metric-content {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--accent-blue);
+            line-height: 1;
+            margin-bottom: 2px;
+            transition: transform 0.2s ease;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Botón de actualizar */
+        .dashboard-refresh {
+            width: 100%;
+            background: rgba(74, 107, 255, 0.1);
+            border: 1px solid rgba(74, 107, 255, 0.3);
+            color: var(--accent-blue);
+            padding: 8px;
+            border-radius: 6px;
+            font-size: 12px;
             font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .dashboard-refresh:hover {
+            background: rgba(74, 107, 255, 0.2);
+            border-color: var(--accent-blue);
+        }
+
+        .dashboard-refresh:active {
+            transform: scale(0.98);
+        }
+
+        .dashboard-refresh svg {
+            transition: transform 0.6s;
+        }
+
+        .dashboard-refresh.refreshing svg {
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
 
         /* CONNECTION STATUS */
@@ -3111,27 +3242,64 @@
                     <!-- Los widgets se generan dinámicamente por JavaScript -->
                 </div>
 
-                <div class="quick-summary">
-                    <div class="summary-title">
-                        📊 <span data-translate="quickSummary">Resumen Rápido</span>
+                <!-- DASHBOARD INTELIGENTE DEL DÍA -->
+                <div class="smart-dashboard">
+                    <div class="dashboard-header">
+                        <div class="dashboard-title">
+                            📊 <span data-translate="smartDashboard">Dashboard del Día</span>
+                        </div>
+                        <div class="dashboard-date" id="dashboardDate">
+                            Cargando...
+                        </div>
                     </div>
-                    <div class="summary-item">
-                        <span data-translate="todayEvents">Eventos hoy</span>
-                        <span class="summary-value">0</span>
+
+                    <!-- Próximo Evento -->
+                    <div class="dashboard-card next-event" id="nextEventCard">
+                        <div class="card-icon">🔔</div>
+                        <div class="card-content">
+                            <div class="card-label">Próximo evento</div>
+                            <div class="card-value" id="nextEventTime">--</div>
+                            <div class="card-detail" id="nextEventTitle">Sin eventos</div>
+                        </div>
                     </div>
-                    <div class="summary-item">
-                        <span data-translate="activeContacts">Contactos</span>
-                        <span class="summary-value">0</span>
+
+                    <!-- Métricas rápidas -->
+                    <div class="dashboard-metrics">
+                        <!-- Tareas Pendientes -->
+                        <div class="metric-item" id="tasksMetric">
+                            <div class="metric-icon">✅</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="tasksCount">0</div>
+                                <div class="metric-label">Tareas</div>
+                            </div>
+                        </div>
+
+                        <!-- Emails sin leer -->
+                        <div class="metric-item" id="emailsMetric" style="display: none;">
+                            <div class="metric-icon">📧</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="emailsCount">0</div>
+                                <div class="metric-label">Emails</div>
+                            </div>
+                        </div>
+
+                        <!-- Cumpleaños hoy -->
+                        <div class="metric-item" id="birthdaysMetric">
+                            <div class="metric-icon">🎂</div>
+                            <div class="metric-content">
+                                <div class="metric-value" id="birthdaysCount">0</div>
+                                <div class="metric-label">Cumpleaños</div>
+                            </div>
+                        </div>
                     </div>
-                    <!-- Emails temporalmente deshabilitado -->
-                    <div class="summary-item" style="display: none;">
-                        <span data-translate="unreadEmails">Emails sin leer</span>
-                        <span class="summary-value">0</span>
-                    </div>
-                    <div class="summary-item" style="display: none;">
-                        <span data-translate="monthExpenses">Gastos del mes</span>
-                        <span class="summary-value">$0</span>
-                    </div>
+
+                    <!-- Botón de actualizar -->
+                    <button class="dashboard-refresh" id="refreshDashboard" title="Actualizar datos">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/>
+                        </svg>
+                        Actualizar
+                    </button>
                 </div>
             </aside>
         </div>
@@ -3202,6 +3370,7 @@
                 reminders: 'Recordatorios',
                 finance: 'Finanzas',
                 football: 'Fútbol',
+                smartDashboard: 'Dashboard del Día',
                 quickSummary: 'Resumen Rápido',
                 todayEvents: 'Eventos hoy',
                 activeContacts: 'Contactos',
@@ -3236,6 +3405,7 @@
                 reminders: 'Reminders',
                 finance: 'Finance',
                 football: 'Football',
+                smartDashboard: 'Today\'s Dashboard',
                 quickSummary: 'Quick Summary',
                 todayEvents: 'Events today',
                 activeContacts: 'Contacts',
@@ -3270,6 +3440,7 @@
                 reminders: 'תזכורות',
                 finance: 'כספים',
                 football: 'כדורגל',
+                smartDashboard: 'לוח מחוונים',
                 quickSummary: 'סיכום מהיר',
                 todayEvents: 'אירועים היום',
                 activeContacts: 'אנשי קשר',
@@ -3986,6 +4157,9 @@
                 
                 // Actualizar widgets con datos reales
                 updateWidgetsSummary();
+                
+                // Actualizar Smart Dashboard
+                updateSmartDashboard();
             }
         }
 
@@ -4980,7 +5154,261 @@
             ]);
             
             console.log('✅ Datos de Calendar y Contacts cargados');
+            
+            // Actualizar dashboard después de cargar los datos
+            updateSmartDashboard();
         }
+
+        // ==========================================
+        // SMART DASHBOARD - FUNCIONES
+        // ==========================================
+
+        /**
+         * Actualizar el Dashboard Inteligente con datos en tiempo real
+         */
+        async function updateSmartDashboard() {
+            console.log('📊 Actualizando Smart Dashboard...');
+            
+            // Actualizar fecha y hora
+            updateDashboardDate();
+            
+            // Si no hay token, mostrar dashboard vacío
+            if (!accessToken) {
+                resetDashboard();
+                return;
+            }
+            
+            try {
+                // Cargar datos en paralelo
+                const [calendarEvents, remindersToday, gmailMessages, contactsData] = await Promise.all([
+                    loadCalendarEvents(),
+                    loadRemindersToday(),
+                    loadGmailMessages().catch(() => null), // Gmail puede fallar si no hay scope
+                    loadContacts()
+                ]);
+                
+                // Actualizar próximo evento
+                updateNextEvent(calendarEvents);
+                
+                // Actualizar tareas pendientes
+                updateTasksCount(remindersToday);
+                
+                // Actualizar emails (solo si hay datos)
+                updateEmailsCount(gmailMessages);
+                
+                // Actualizar cumpleaños
+                updateBirthdaysCount(contactsData);
+                
+                console.log('✅ Dashboard actualizado correctamente');
+                
+            } catch (error) {
+                console.error('❌ Error actualizando dashboard:', error);
+            }
+        }
+
+        /**
+         * Actualizar la fecha del dashboard
+         */
+        function updateDashboardDate() {
+            const dateElement = document.getElementById('dashboardDate');
+            if (!dateElement) return;
+            
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            
+            const dateString = now.toLocaleDateString('es-ES', options);
+            dateElement.textContent = dateString.charAt(0).toUpperCase() + dateString.slice(1);
+        }
+
+        /**
+         * Actualizar el próximo evento
+         */
+        function updateNextEvent(events) {
+            const timeElement = document.getElementById('nextEventTime');
+            const titleElement = document.getElementById('nextEventTitle');
+            const cardElement = document.getElementById('nextEventCard');
+            
+            if (!timeElement || !titleElement || !cardElement) return;
+            
+            if (!events || events.length === 0) {
+                timeElement.textContent = '--';
+                titleElement.textContent = 'Sin eventos hoy';
+                cardElement.style.opacity = '0.6';
+                return;
+            }
+            
+            // Encontrar el próximo evento (el que viene después de ahora)
+            const now = new Date();
+            const nextEvent = events.find(event => {
+                const eventTime = new Date(event.start.dateTime || event.start.date);
+                return eventTime > now;
+            });
+            
+            if (!nextEvent) {
+                // Todos los eventos ya pasaron
+                timeElement.textContent = 'Completado';
+                titleElement.textContent = 'Todos los eventos del día finalizados';
+                cardElement.style.opacity = '0.6';
+                return;
+            }
+            
+            // Calcular tiempo hasta el evento
+            const eventTime = new Date(nextEvent.start.dateTime || nextEvent.start.date);
+            const minutesUntil = Math.floor((eventTime - now) / 1000 / 60);
+            
+            let timeText;
+            if (minutesUntil < 1) {
+                timeText = '¡Ahora!';
+            } else if (minutesUntil < 60) {
+                timeText = `en ${minutesUntil} min`;
+            } else {
+                const hours = Math.floor(minutesUntil / 60);
+                timeText = `en ${hours}h ${minutesUntil % 60}m`;
+            }
+            
+            // Formatear hora del evento
+            const eventTimeString = nextEvent.start.dateTime 
+                ? new Date(nextEvent.start.dateTime).toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })
+                : 'Todo el día';
+            
+            timeElement.textContent = timeText;
+            titleElement.textContent = `${nextEvent.summary || 'Sin título'} - ${eventTimeString}`;
+            cardElement.style.opacity = '1';
+        }
+
+        /**
+         * Actualizar contador de tareas pendientes
+         */
+        function updateTasksCount(reminders) {
+            const countElement = document.getElementById('tasksCount');
+            if (!countElement) return;
+            
+            const count = reminders ? reminders.length : 0;
+            countElement.textContent = count;
+            
+            // Agregar efecto de actualización
+            countElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                countElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        /**
+         * Actualizar contador de emails sin leer
+         */
+        function updateEmailsCount(messages) {
+            const countElement = document.getElementById('emailsCount');
+            const metricElement = document.getElementById('emailsMetric');
+            
+            if (!countElement || !metricElement) return;
+            
+            // Si no hay datos (sin scope de Gmail), ocultar métrica
+            if (messages === null || messages === undefined) {
+                metricElement.style.display = 'none';
+                return;
+            }
+            
+            // Mostrar métrica y actualizar contador
+            metricElement.style.display = 'flex';
+            const count = messages.length || 0;
+            countElement.textContent = count;
+            
+            // Efecto de actualización
+            countElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                countElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        /**
+         * Actualizar contador de cumpleaños
+         */
+        function updateBirthdaysCount(contactsData) {
+            const countElement = document.getElementById('birthdaysCount');
+            if (!countElement) return;
+            
+            if (!contactsData || !contactsData.contacts) {
+                countElement.textContent = '0';
+                return;
+            }
+            
+            // Obtener fecha de hoy (solo día y mes)
+            const today = new Date();
+            const todayMonth = today.getMonth() + 1; // JavaScript months are 0-indexed
+            const todayDay = today.getDate();
+            
+            // Contar contactos con cumpleaños hoy
+            let birthdaysCount = 0;
+            
+            contactsData.contacts.forEach(contact => {
+                if (contact.birthdays && contact.birthdays.length > 0) {
+                    contact.birthdays.forEach(birthday => {
+                        if (birthday.date) {
+                            const birthMonth = birthday.date.month;
+                            const birthDay = birthday.date.day;
+                            
+                            if (birthMonth === todayMonth && birthDay === todayDay) {
+                                birthdaysCount++;
+                            }
+                        }
+                    });
+                }
+            });
+            
+            countElement.textContent = birthdaysCount;
+            
+            // Efecto de actualización
+            countElement.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                countElement.style.transform = 'scale(1)';
+            }, 200);
+        }
+
+        /**
+         * Resetear dashboard a valores por defecto
+         */
+        function resetDashboard() {
+            document.getElementById('nextEventTime').textContent = '--';
+            document.getElementById('nextEventTitle').textContent = 'Inicia sesión para ver tus eventos';
+            document.getElementById('tasksCount').textContent = '0';
+            document.getElementById('emailsCount').textContent = '0';
+            document.getElementById('birthdaysCount').textContent = '0';
+            document.getElementById('nextEventCard').style.opacity = '0.6';
+        }
+
+        /**
+         * Manejar clic en botón de actualizar
+         */
+        function setupDashboardRefresh() {
+            const refreshButton = document.getElementById('refreshDashboard');
+            if (!refreshButton) return;
+            
+            refreshButton.addEventListener('click', async () => {
+                // Agregar clase de animación
+                refreshButton.classList.add('refreshing');
+                refreshButton.disabled = true;
+                
+                // Actualizar dashboard
+                await updateSmartDashboard();
+                
+                // Remover clase de animación
+                setTimeout(() => {
+                    refreshButton.classList.remove('refreshing');
+                    refreshButton.disabled = false;
+                }, 1000);
+            });
+        }
+
+        // Actualizar fecha cada minuto
+        setInterval(updateDashboardDate, 60000);
+
+        // Actualizar dashboard cada 5 minutos
+        setInterval(updateSmartDashboard, 300000);
 
         // ==========================================
         // CREAR CARPETA EN DRIVE
@@ -6713,6 +7141,10 @@
             // Inicializar sistema de widgets personalizables
             initializeWidgets();
             
+            // Inicializar Smart Dashboard
+            setupDashboardRefresh();
+            updateDashboardDate();
+            
             // Inicializar Google OAuth
             initGoogleAuth();
 
@@ -6731,6 +7163,8 @@
                     console.log('✅ Token restaurado desde localStorage');
                     // Iniciar sistema de refresh automático
                     startTokenRefreshTimer();
+                    // Actualizar dashboard con datos
+                    updateSmartDashboard();
                 }
             }
 
