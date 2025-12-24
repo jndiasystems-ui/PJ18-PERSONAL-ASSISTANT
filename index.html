@@ -1124,22 +1124,25 @@
         }
 
         .folder-toggle.expanded {
-            /* No rotar, ya que usamos directamente ▼ */
+            transform: rotate(90deg);
         }
 
         .folder-contents {
-            display: none;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
             padding-left: 24px;
             margin-top: 2px;
             margin-bottom: 4px;
             padding-top: 2px;
             padding-bottom: 2px;
             border-left: 1px solid rgba(154, 160, 166, 0.15);
-            background: rgba(248, 249, 250, 0.02);
+            transition: max-height 0.3s ease-out, opacity 0.3s;
         }
 
         .folder-contents.expanded {
-            display: block;
+            max-height: 2000px;
+            opacity: 1;
         }
 
         .file-item-nested {
@@ -6335,13 +6338,11 @@
             if (contents.classList.contains('expanded')) {
                 contents.classList.remove('expanded');
                 toggle.classList.remove('expanded');
-                toggle.textContent = '▶';
                 return;
             }
 
             // Expandir
             toggle.classList.add('expanded');
-            toggle.textContent = '▼';
             contents.classList.add('expanded');
 
             // Si ya están cacheados los archivos, no recargar
