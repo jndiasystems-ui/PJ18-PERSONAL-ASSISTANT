@@ -4252,8 +4252,8 @@
             }
 
             try {
-                // Solicitar token de acceso
-                tokenClient.requestAccessToken({ prompt: 'consent' });
+                // Solicitar token de acceso (sin 'consent' para ser más rápido)
+                tokenClient.requestAccessToken({ prompt: '' });
             } catch (error) {
                 console.error('Error al solicitar token:', error);
                 alert('Error al iniciar sesión. Por favor recarga la página e intenta de nuevo.');
