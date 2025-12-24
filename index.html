@@ -7352,7 +7352,7 @@
             const typeText = itemType === 'folder' ? 'carpeta' : 'archivo';
 
             showConfirm(
-                `<strong>⚠️ ADVERTENCIA CRÍTICA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
+                `<strong>⚠️ ADVERTENCIA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
                 'Confirmar eliminación',
                 async () => {
                     if (!accessToken) {
@@ -7435,7 +7435,7 @@
                 const filesCount = trashedItems.length - foldersCount;
                 
                 showConfirm(
-                    `<strong>⚠️ ADVERTENCIA CRÍTICA ⚠️</strong><br><br>¿Eliminar PERMANENTEMENTE TODOS los <strong>${trashedItems.length} elementos</strong> de la papelera?<br><br>Esta acción <strong>NO se puede deshacer</strong>.<br><br>Se eliminarán:<br>• <strong>${foldersCount} carpetas</strong><br>• <strong>${filesCount} archivos</strong>`,
+                    `<strong>⚠️ ADVERTENCIA ⚠️</strong><br><br>¿Eliminar PERMANENTEMENTE TODOS los <strong>${trashedItems.length} elementos</strong> de la papelera?<br><br>Esta acción <strong>NO se puede deshacer</strong>.<br><br>Se eliminarán:<br>• <strong>${foldersCount} carpetas</strong><br>• <strong>${filesCount} archivos</strong>`,
                     'Vaciar papelera',
                     async () => {
                         // Mostrar progreso
