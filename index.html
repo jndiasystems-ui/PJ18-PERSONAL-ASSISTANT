@@ -260,6 +260,12 @@
             padding: 8px 0;
         }
 
+        .side-menu-bottom {
+            padding: 8px 0;
+            border-top: 1px solid var(--border-color);
+            background: var(--secondary-dark);
+        }
+
         .side-menu-item {
             padding: 14px 20px;
             display: flex;
@@ -327,7 +333,7 @@
             bottom: 0;
             width: 400px;
             max-width: 90vw;
-            background: var(--secondary-bg);
+            background: var(--primary-dark);
             box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3);
             z-index: 9999;
             transition: right 0.3s ease;
@@ -358,7 +364,7 @@
         .settings-panel-close {
             background: none;
             border: none;
-            color: var(--text-color);
+            color: var(--text-primary);
             cursor: pointer;
             padding: 8px;
             border-radius: 6px;
@@ -366,7 +372,7 @@
         }
 
         .settings-panel-close:hover {
-            background: var(--tertiary-bg);
+            background: var(--tertiary-dark);
         }
 
         .settings-panel-content {
@@ -397,7 +403,7 @@
             align-items: center;
             justify-content: space-between;
             padding: 16px;
-            background: var(--tertiary-bg);
+            background: var(--secondary-dark);
             border-radius: 8px;
             margin-bottom: 12px;
             cursor: pointer;
@@ -455,12 +461,12 @@
 
         /* Select Dropdown */
         .settings-select {
-            background: var(--primary-bg);
+            background: var(--secondary-dark);
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 8px 12px;
             font-size: 14px;
-            color: var(--text-color);
+            color: var(--text-primary);
             cursor: pointer;
             min-width: 120px;
         }
@@ -471,9 +477,9 @@
 
         /* Button */
         .settings-button {
-            background: var(--tertiary-bg);
+            background: var(--secondary-dark);
             border: 1px solid var(--border-color);
-            color: var(--text-color);
+            color: var(--text-primary);
             padding: 10px 20px;
             border-radius: 6px;
             font-size: 14px;
@@ -3127,9 +3133,10 @@
                     </svg>
                     <span>YouTube</span>
                 </a>
+            </div>
 
-                <div class="side-menu-divider"></div>
-
+            <!-- Sección fija en el bottom -->
+            <div class="side-menu-bottom">
                 <!-- Configuración -->
                 <button class="side-menu-item" onclick="window.openSettings()">
                     <svg viewBox="0 0 24 24" fill="currentColor">
