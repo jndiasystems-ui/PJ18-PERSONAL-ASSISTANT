@@ -7352,7 +7352,7 @@
             const typeText = itemType === 'folder' ? 'carpeta' : 'archivo';
 
             showConfirm(
-                `<strong>⚠️ ADVERTENCIA CRÍTICA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
+                `<strong>⚠️ ADVERTENCIA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
                 'Confirmar eliminación',
                 async () => {
                     if (!accessToken) {
