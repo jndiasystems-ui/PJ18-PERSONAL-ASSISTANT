@@ -7352,7 +7352,7 @@
             const typeText = itemType === 'folder' ? 'carpeta' : 'archivo';
 
             showConfirm(
-                `<strong>⚠️ ADVERTENCIA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
+                `<strong>⚠️ ADVERTENCIA CRÍTICA</strong><br><br>¿Eliminar PERMANENTEMENTE ${typeText} "<strong>${itemName}</strong>"?<br><br>Esta acción <strong>NO se puede deshacer</strong>.`,
                 'Confirmar eliminación',
                 async () => {
                     if (!accessToken) {
@@ -9313,6 +9313,10 @@
         // MODALES PERSONALIZADOS
         // ==========================================
 
+        // Variables globales para callbacks
+        let modalConfirmCallback = null;
+        let modalCancelCallback = null;
+
         // Función para mostrar modal de alerta
         function showAlert(message, title = 'Mensaje', icon = 'info') {
             const overlay = document.getElementById('customModalOverlay');
@@ -9320,6 +9324,10 @@
             const modalBody = document.getElementById('customModalBody');
             const modalFooter = document.getElementById('customModalFooter');
             const modalIcon = document.getElementById('customModalIcon');
+
+            // Limpiar callbacks
+            modalConfirmCallback = null;
+            modalCancelCallback = null;
 
             // Configurar título
             modalTitle.textContent = title;
@@ -9356,6 +9364,10 @@
             const modalFooter = document.getElementById('customModalFooter');
             const modalIcon = document.getElementById('customModalIcon');
 
+            // Guardar callbacks en variables globales
+            modalConfirmCallback = onConfirm;
+            modalCancelCallback = onCancel;
+
             // Configurar título
             modalTitle.textContent = title;
 
@@ -9373,16 +9385,38 @@
             // Configurar footer con botones
             const buttonClass = isDanger ? 'custom-modal-button-danger' : 'custom-modal-button-confirm';
             modalFooter.innerHTML = `
-                <button class="custom-modal-button custom-modal-button-cancel" onclick="closeCustomModal(); ${onCancel ? onCancel.toString() + '()' : ''}">
+                <button class="custom-modal-button custom-modal-button-cancel" onclick="handleModalCancel()">
                     Cancelar
                 </button>
-                <button class="custom-modal-button ${buttonClass}" onclick="closeCustomModal(); (${onConfirm.toString()})()">
+                <button class="custom-modal-button ${buttonClass}" onclick="handleModalConfirm()">
                     Aceptar
                 </button>
             `;
 
             // Mostrar modal
             overlay.classList.add('show');
+        }
+
+        // Manejar confirmación
+        function handleModalConfirm() {
+            closeCustomModal();
+            if (modalConfirmCallback && typeof modalConfirmCallback === 'function') {
+                modalConfirmCallback();
+            }
+            // Limpiar callbacks
+            modalConfirmCallback = null;
+            modalCancelCallback = null;
+        }
+
+        // Manejar cancelación
+        function handleModalCancel() {
+            closeCustomModal();
+            if (modalCancelCallback && typeof modalCancelCallback === 'function') {
+                modalCancelCallback();
+            }
+            // Limpiar callbacks
+            modalConfirmCallback = null;
+            modalCancelCallback = null;
         }
 
         // Función para cerrar modal
@@ -9396,7 +9430,7 @@
             const overlay = document.getElementById('customModalOverlay');
             overlay.addEventListener('click', (e) => {
                 if (e.target === overlay) {
-                    closeCustomModal();
+                    handleModalCancel(); // Usar handleModalCancel para limpiar callbacks
                 }
             });
         });
