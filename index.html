@@ -300,6 +300,202 @@
             text-align: center;
         }
 
+        /* PANEL DE CONFIGURACIÓN */
+        .settings-panel-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 9998;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .settings-panel-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .settings-panel {
+            position: fixed;
+            right: -400px;
+            top: 0;
+            bottom: 0;
+            width: 400px;
+            max-width: 90vw;
+            background: var(--secondary-bg);
+            box-shadow: -2px 0 20px rgba(0, 0, 0, 0.3);
+            z-index: 9999;
+            transition: right 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .settings-panel.active {
+            right: 0;
+        }
+
+        .settings-panel-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .settings-panel-title {
+            font-size: 20px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .settings-panel-close {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .settings-panel-close:hover {
+            background: var(--tertiary-bg);
+        }
+
+        .settings-panel-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+        }
+
+        .settings-section {
+            margin-bottom: 32px;
+        }
+
+        .settings-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .settings-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+        }
+
+        .settings-option {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px;
+            background: var(--tertiary-bg);
+            border-radius: 8px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .settings-option:hover {
+            background: var(--tertiary-dark);
+        }
+
+        .settings-option-info {
+            flex: 1;
+        }
+
+        .settings-option-label {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .settings-option-description {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            width: 48px;
+            height: 26px;
+            background: #4a5568;
+            border-radius: 13px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .toggle-switch.active {
+            background: #6366f1;
+        }
+
+        .toggle-switch-slider {
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+
+        .toggle-switch.active .toggle-switch-slider {
+            transform: translateX(22px);
+        }
+
+        /* Select Dropdown */
+        .settings-select {
+            background: var(--primary-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: var(--text-color);
+            cursor: pointer;
+            min-width: 120px;
+        }
+
+        .settings-select:hover {
+            border-color: var(--text-secondary);
+        }
+
+        /* Button */
+        .settings-button {
+            background: var(--tertiary-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-button:hover {
+            background: var(--tertiary-dark);
+            border-color: var(--text-secondary);
+        }
+
+        .settings-button.danger {
+            background: rgba(239, 68, 68, 0.1);
+            border-color: #ef4444;
+            color: #ef4444;
+        }
+
+        .settings-button.danger:hover {
+            background: rgba(239, 68, 68, 0.2);
+        }
+
         .user-section {
             display: flex;
             align-items: center;
@@ -2936,9 +3132,8 @@
 
                 <!-- Configuración -->
                 <button class="side-menu-item" onclick="window.openSettings()">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="12" cy="12" r="3"></circle>
-                        <path d="M12 1v6m0 6v6m7.071-13.071l-4.242 4.242m0 5.656l4.242 4.242M23 12h-6m-6 0H5m13.071 7.071l-4.242-4.242m-5.656 0l-4.242 4.242"></path>
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
                     </svg>
                     <span>Configuración</span>
                 </button>
@@ -2967,6 +3162,164 @@
             <div class="side-menu-footer">
                 Tefy AI v2.2 - Asistente Personal<br>
                 © 2024 JND AI SYSTEMS
+            </div>
+        </div>
+
+        <!-- Panel de Configuración -->
+        <div class="settings-panel-overlay" id="settingsPanelOverlay" onclick="window.closeSettings()"></div>
+        <div class="settings-panel" id="settingsPanel">
+            <div class="settings-panel-header">
+                <div class="settings-panel-title">
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; height: 24px;">
+                        <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+                    </svg>
+                    <span>Configuración</span>
+                </div>
+                <button class="settings-panel-close" onclick="window.closeSettings()">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="settings-panel-content">
+                <!-- APARIENCIA -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Apariencia</div>
+                    
+                    <div class="settings-option" onclick="window.toggleTheme()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Tema</div>
+                            <div class="settings-option-description" id="settingsThemeDescription">Tema actual: Oscuro</div>
+                        </div>
+                        <div class="toggle-switch" id="settingsThemeToggle">
+                            <div class="toggle-switch-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-option">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Idioma</div>
+                            <div class="settings-option-description">Cambiar idioma de la interfaz</div>
+                        </div>
+                        <select class="settings-select" id="settingsLanguageSelect" onchange="window.changeLanguage(this.value)">
+                            <option value="es">Español</option>
+                            <option value="en">English</option>
+                            <option value="he">עברית</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- NOTIFICACIONES -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Notificaciones</div>
+                    
+                    <div class="settings-option" onclick="window.toggleSetting('notifications')">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Notificaciones del sistema</div>
+                            <div class="settings-option-description">Recibir notificaciones de eventos y recordatorios</div>
+                        </div>
+                        <div class="toggle-switch" id="notificationsToggle">
+                            <div class="toggle-switch-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-option" onclick="window.toggleSetting('sound')">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Sonidos</div>
+                            <div class="settings-option-description">Reproducir sonidos en notificaciones</div>
+                        </div>
+                        <div class="toggle-switch active" id="soundToggle">
+                            <div class="toggle-switch-slider"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WIDGETS -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Widgets</div>
+                    
+                    <div class="settings-option" onclick="window.openWidgetConfig()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Personalizar widgets</div>
+                            <div class="settings-option-description">Elegir qué widgets mostrar en el dashboard</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+
+                    <div class="settings-option" onclick="window.toggleSetting('autoRefresh')">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Auto-actualizar widgets</div>
+                            <div class="settings-option-description">Actualizar widgets automáticamente cada 5 minutos</div>
+                        </div>
+                        <div class="toggle-switch active" id="autoRefreshToggle">
+                            <div class="toggle-switch-slider"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PRIVACIDAD Y DATOS -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Privacidad y Datos</div>
+                    
+                    <div class="settings-option" onclick="window.toggleSetting('saveHistory')">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Guardar historial de chat</div>
+                            <div class="settings-option-description">Mantener conversaciones anteriores</div>
+                        </div>
+                        <div class="toggle-switch active" id="saveHistoryToggle">
+                            <div class="toggle-switch-slider"></div>
+                        </div>
+                    </div>
+
+                    <div class="settings-option" onclick="window.clearChatHistory()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Limpiar historial de chat</div>
+                            <div class="settings-option-description">Eliminar todas las conversaciones guardadas</div>
+                        </div>
+                        <button class="settings-button danger">Limpiar</button>
+                    </div>
+
+                    <div class="settings-option" onclick="window.clearFavorites()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Limpiar favoritos</div>
+                            <div class="settings-option-description">Eliminar todos los elementos favoritos</div>
+                        </div>
+                        <button class="settings-button danger">Limpiar</button>
+                    </div>
+                </div>
+
+                <!-- AVANZADO -->
+                <div class="settings-section">
+                    <div class="settings-section-title">Avanzado</div>
+                    
+                    <div class="settings-option" onclick="window.exportSettings()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Exportar configuración</div>
+                            <div class="settings-option-description">Descargar tus configuraciones y favoritos</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="7 10 12 15 17 10"></polyline>
+                            <line x1="12" y1="15" x2="12" y2="3"></line>
+                        </svg>
+                    </div>
+
+                    <div class="settings-option" onclick="window.importSettings()">
+                        <div class="settings-option-info">
+                            <div class="settings-option-label">Importar configuración</div>
+                            <div class="settings-option-description">Restaurar desde un archivo de respaldo</div>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width: 20px; height: 20px;">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                            <polyline points="17 8 12 3 7 8"></polyline>
+                            <line x1="12" y1="3" x2="12" y2="15"></line>
+                        </svg>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -3736,32 +4089,191 @@
         }
 
         // Abrir modal de configuración
+        // Abrir panel de configuración
         window.openSettings = function() {
             closeSideMenu();
             
-            const currentTheme = document.body.classList.contains('light-mode') ? 'Claro' : 'Oscuro';
-            const message = `
-╔════════════════════════════════════════╗
-║               ⚙️ CONFIGURACIÓN                ║
-╠════════════════════════════════════════╣
-║                                        ║
-║  🎨 Tema actual: ${currentTheme}
-║     (Cambiar en el ícono de tema)     ║
-║                                        ║
-║  📋 Opciones disponibles:             ║
-║                                        ║
-║  • Cambiar tema: Claro/Oscuro         ║
-║  • Favoritos: Persistentes por usuario║
-║  • Sesión: Auto-renovación activa     ║
-║  • Idioma: Español, English, עברית    ║
-║                                        ║
-║  💡 Más configuraciones próximamente  ║
-║                                        ║
-╚════════════════════════════════════════╝
+            const overlay = document.getElementById('settingsPanelOverlay');
+            const panel = document.getElementById('settingsPanel');
+            
+            overlay.classList.add('active');
+            panel.classList.add('active');
+            
+            // Actualizar estado del tema
+            updateSettingsThemeUI();
+            
+            // Actualizar idioma seleccionado
+            const languageSelect = document.getElementById('settingsLanguageSelect');
+            if (languageSelect) {
+                languageSelect.value = currentLanguage;
+            }
+        }
 
-Para cambiar el tema, usa el interruptor en la esquina superior derecha (☀️/🌙)
-            `;
-            alert(message);
+        // Cerrar panel de configuración
+        window.closeSettings = function() {
+            const overlay = document.getElementById('settingsPanelOverlay');
+            const panel = document.getElementById('settingsPanel');
+            
+            overlay.classList.remove('active');
+            panel.classList.remove('active');
+        }
+
+        // Actualizar UI del tema en configuración
+        function updateSettingsThemeUI() {
+            const isLightMode = document.body.classList.contains('light-theme');
+            const themeToggle = document.getElementById('settingsThemeToggle');
+            const themeDescription = document.getElementById('settingsThemeDescription');
+            
+            if (themeToggle) {
+                if (isLightMode) {
+                    themeToggle.classList.add('active');
+                } else {
+                    themeToggle.classList.remove('active');
+                }
+            }
+            
+            if (themeDescription) {
+                themeDescription.textContent = `Tema actual: ${isLightMode ? 'Claro' : 'Oscuro'}`;
+            }
+        }
+
+        // Toggle de configuraciones
+        window.toggleSetting = function(settingName) {
+            const toggle = document.getElementById(settingName + 'Toggle');
+            if (!toggle) return;
+            
+            toggle.classList.toggle('active');
+            const isActive = toggle.classList.contains('active');
+            
+            // Guardar en localStorage
+            localStorage.setItem(`tefy_setting_${settingName}`, isActive);
+            
+            console.log(`Configuración ${settingName}: ${isActive ? 'activada' : 'desactivada'}`);
+        }
+
+        // Limpiar historial de chat
+        window.clearChatHistory = function() {
+            if (confirm('¿Estás seguro de que deseas eliminar todo el historial de chat?\n\nEsta acción no se puede deshacer.')) {
+                const userEmail = getCurrentUserEmail();
+                if (userEmail) {
+                    localStorage.removeItem(`tefy_chat_history_${userEmail}`);
+                    messages = [];
+                    renderMessages();
+                    console.log('✅ Historial de chat eliminado');
+                    alert('Historial de chat eliminado correctamente.');
+                }
+            }
+        }
+
+        // Limpiar favoritos
+        window.clearFavorites = function() {
+            if (confirm('¿Estás seguro de que deseas eliminar todos los favoritos?\n\nEsta acción no se puede deshacer.')) {
+                const userEmail = getCurrentUserEmail();
+                if (userEmail) {
+                    localStorage.removeItem(`tefy_favorites_${userEmail}`);
+                    renderFavorites();
+                    displayFolders(driveFolders);
+                    console.log('✅ Favoritos eliminados');
+                    alert('Favoritos eliminados correctamente.');
+                }
+            }
+        }
+
+        // Exportar configuración
+        window.exportSettings = function() {
+            const userEmail = getCurrentUserEmail();
+            if (!userEmail) {
+                alert('No hay sesión activa');
+                return;
+            }
+            
+            const data = {
+                version: '2.2',
+                exportDate: new Date().toISOString(),
+                user: userEmail,
+                favorites: getFavorites(),
+                settings: {
+                    theme: document.body.classList.contains('light-mode') ? 'light' : 'dark',
+                    language: currentLanguage,
+                    notifications: localStorage.getItem('tefy_setting_notifications') === 'true',
+                    sound: localStorage.getItem('tefy_setting_sound') !== 'false',
+                    autoRefresh: localStorage.getItem('tefy_setting_autoRefresh') !== 'false',
+                    saveHistory: localStorage.getItem('tefy_setting_saveHistory') !== 'false'
+                }
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `tefy-ai-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            console.log('✅ Configuración exportada');
+        }
+
+        // Importar configuración
+        window.importSettings = function() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    try {
+                        const data = JSON.parse(event.target.result);
+                        
+                        if (!data.version || !data.favorites) {
+                            throw new Error('Archivo inválido');
+                        }
+                        
+                        const userEmail = getCurrentUserEmail();
+                        if (!userEmail) {
+                            alert('No hay sesión activa');
+                            return;
+                        }
+                        
+                        // Importar favoritos
+                        localStorage.setItem(`tefy_favorites_${userEmail}`, JSON.stringify(data.favorites));
+                        
+                        // Importar configuraciones
+                        if (data.settings) {
+                            if (data.settings.theme === 'light' && !document.body.classList.contains('light-mode')) {
+                                toggleTheme();
+                            } else if (data.settings.theme === 'dark' && document.body.classList.contains('light-mode')) {
+                                toggleTheme();
+                            }
+                            
+                            if (data.settings.language) {
+                                changeLanguage(data.settings.language);
+                            }
+                            
+                            localStorage.setItem('tefy_setting_notifications', data.settings.notifications);
+                            localStorage.setItem('tefy_setting_sound', data.settings.sound);
+                            localStorage.setItem('tefy_setting_autoRefresh', data.settings.autoRefresh);
+                            localStorage.setItem('tefy_setting_saveHistory', data.settings.saveHistory);
+                        }
+                        
+                        // Recargar UI
+                        renderFavorites();
+                        displayFolders(driveFolders);
+                        
+                        alert('Configuración importada correctamente. La página se recargará.');
+                        location.reload();
+                    } catch (error) {
+                        console.error('Error al importar:', error);
+                        alert('Error al importar la configuración. Verifica que el archivo sea válido.');
+                    }
+                };
+                reader.readAsText(file);
+            };
+            input.click();
         }
 
         // Abrir modal de ayuda
@@ -8376,6 +8888,11 @@ Para cambiar el tema, usa el interruptor en la esquina superior derecha (☀️/
                 const switchCheckbox = document.getElementById('themeSwitchCheckbox');
                 if (switchCheckbox) {
                     switchCheckbox.checked = !isLight; // checked = dark mode
+                }
+                
+                // Actualizar panel de configuración
+                if (typeof updateSettingsThemeUI === 'function') {
+                    updateSettingsThemeUI();
                 }
             }
 
