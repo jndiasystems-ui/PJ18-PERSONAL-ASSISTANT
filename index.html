@@ -3587,11 +3587,26 @@
                     <span class="section-toggle" id="trash-toggle">▼</span>
                     <span>Papelera</span>
                     <button onclick="window.emptyTrash(event)" 
-                            style="margin-left: auto; padding: 4px 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid #ef4444; color: #ef4444; border-radius: 4px; font-size: 12px; cursor: pointer; transition: all 0.2s;"
-                            onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'"
-                            onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'"
-                            title="Eliminar todos los elementos de la papelera">
-                        🗑️ Vaciar
+                            style="margin-left: auto; 
+                                   padding: 6px 12px; 
+                                   background: transparent; 
+                                   border: 1px solid var(--border-color); 
+                                   color: var(--text-secondary); 
+                                   border-radius: 6px; 
+                                   font-size: 13px; 
+                                   cursor: pointer; 
+                                   transition: all 0.2s;
+                                   display: flex;
+                                   align-items: center;
+                                   gap: 6px;"
+                            onmouseover="this.style.background='var(--tertiary-dark)'; this.style.color='var(--text-primary)'"
+                            onmouseout="this.style.background='transparent'; this.style.color='var(--text-secondary)'"
+                            title="Vaciar papelera">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        </svg>
+                        <span>Vaciar</span>
                     </button>
                 </div>
                 <div class="section-content" id="trash-content">
@@ -7234,7 +7249,7 @@
             }
         }
 
-        // Vaciar papelera completamente
+        // Vaciar papelera completamente (OPTIMIZADO)
         window.emptyTrash = async function(event) {
             // Detener propagación para que no se active el toggleSection
             if (event) {
@@ -7272,18 +7287,20 @@
                 }
 
                 // Confirmar con el usuario
-                if (!confirm(`⚠️ ADVERTENCIA CRÍTICA ⚠️\n\n¿Eliminar PERMANENTEMENTE TODOS los ${trashedItems.length} elementos de la papelera?\n\nEsta acción NO se puede deshacer.\n\nSe eliminarán:\n- ${trashedItems.filter(i => i.mimeType === 'application/vnd.google-apps.folder').length} carpetas\n- ${trashedItems.filter(i => i.mimeType !== 'application/vnd.google-apps.folder').length} archivos`)) {
+                const foldersCount = trashedItems.filter(i => i.mimeType === 'application/vnd.google-apps.folder').length;
+                const filesCount = trashedItems.length - foldersCount;
+                
+                if (!confirm(`⚠️ ADVERTENCIA CRÍTICA ⚠️\n\n¿Eliminar PERMANENTEMENTE TODOS los ${trashedItems.length} elementos de la papelera?\n\nEsta acción NO se puede deshacer.\n\nSe eliminarán:\n- ${foldersCount} carpetas\n- ${filesCount} archivos`)) {
                     return;
                 }
 
                 // Mostrar progreso
-                let deletedCount = 0;
-                let errorCount = 0;
-
                 addMessageToChat(`🗑️ Vaciando papelera (${trashedItems.length} elementos)...`, 'ai');
 
-                // Eliminar cada item
-                for (const item of trashedItems) {
+                const startTime = Date.now();
+
+                // Función para eliminar un item
+                const deleteItem = async (item) => {
                     try {
                         const deleteResponse = await fetch(
                             `https://www.googleapis.com/drive/v3/files/${item.id}`,
@@ -7294,24 +7311,48 @@
                                 }
                             }
                         );
-
-                        if (deleteResponse.ok) {
-                            deletedCount++;
-                        } else {
-                            errorCount++;
-                            console.error(`Error eliminando ${item.name}:`, deleteResponse.status);
-                        }
+                        
+                        return {
+                            success: deleteResponse.ok,
+                            name: item.name,
+                            status: deleteResponse.status
+                        };
                     } catch (error) {
-                        errorCount++;
                         console.error(`Error eliminando ${item.name}:`, error);
+                        return {
+                            success: false,
+                            name: item.name,
+                            error: error.message
+                        };
                     }
+                };
+
+                // Eliminar en lotes de 10 en paralelo para optimizar velocidad
+                const batchSize = 10;
+                const results = [];
+                
+                for (let i = 0; i < trashedItems.length; i += batchSize) {
+                    const batch = trashedItems.slice(i, i + batchSize);
+                    const batchResults = await Promise.all(batch.map(item => deleteItem(item)));
+                    results.push(...batchResults);
+                    
+                    // Actualizar progreso cada lote
+                    const progress = Math.min(results.length, trashedItems.length);
+                    console.log(`Progreso: ${progress}/${trashedItems.length} elementos procesados`);
                 }
+
+                // Contar éxitos y errores
+                const deletedCount = results.filter(r => r.success).length;
+                const errorCount = results.filter(r => !r.success).length;
+
+                const endTime = Date.now();
+                const timeElapsed = ((endTime - startTime) / 1000).toFixed(1);
 
                 // Mostrar resultado
                 if (errorCount === 0) {
-                    addMessageToChat(`✅ Papelera vaciada exitosamente. ${deletedCount} elementos eliminados permanentemente.`, 'ai');
+                    addMessageToChat(`✅ Papelera vaciada exitosamente en ${timeElapsed}s. ${deletedCount} elementos eliminados permanentemente.`, 'ai');
                 } else {
-                    addMessageToChat(`⚠️ Papelera vaciada con errores. ${deletedCount} elementos eliminados, ${errorCount} errores.`, 'ai');
+                    addMessageToChat(`⚠️ Papelera vaciada con errores en ${timeElapsed}s. ${deletedCount} elementos eliminados, ${errorCount} errores.`, 'ai');
                 }
 
                 // Recargar papelera
