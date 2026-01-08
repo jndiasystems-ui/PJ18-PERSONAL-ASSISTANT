@@ -5038,6 +5038,8 @@
 
         let tokenClient;
         let accessToken = null;
+        let tokenRefreshTimer = null;
+        let tokenRefreshAttempts = 0;
         let cachedCalendarEvents = []; // Almacenar eventos para actualizar solo el tiempo
 
         // Inicializar Google Identity Services
@@ -5084,6 +5086,9 @@
                 return;
             }
 
+            // Resetear contador de intentos fallidos
+            tokenRefreshAttempts = 0;
+
             // Guardar token y tiempo de expiración
             accessToken = response.access_token;
             localStorage.setItem('google_access_token', accessToken);
@@ -5093,7 +5098,7 @@
             const expiryTime = Date.now() + (expiresIn * 1000);
             localStorage.setItem('google_token_expiry', expiryTime.toString());
             
-            console.log(`Token guardado. Expira en ${expiresIn} segundos (${new Date(expiryTime).toLocaleTimeString()})`);
+            console.log(`✅ Token guardado. Expira en ${expiresIn} segundos (${new Date(expiryTime).toLocaleTimeString()})`);
             
             // Iniciar sistema de refresh automático
             startTokenRefreshTimer();
@@ -5275,17 +5280,16 @@
         // TOKEN REFRESH AUTOMÁTICO
         // ==========================================
         
-        let tokenRefreshTimer = null;
-        
-        // Verificar si el token está por expirar (faltan menos de 5 minutos)
+        // Verificar si el token está por expirar (faltan menos de 10 minutos)
         function isTokenExpiringSoon() {
             const expiryTime = localStorage.getItem('google_token_expiry');
             if (!expiryTime) return true;
             
             const timeLeft = parseInt(expiryTime) - Date.now();
-            const fiveMinutes = 5 * 60 * 1000;
+            // Renovar cuando quedan menos de 10 minutos (antes era 5)
+            const tenMinutes = 10 * 60 * 1000;
             
-            return timeLeft < fiveMinutes;
+            return timeLeft < tenMinutes;
         }
         
         // Verificar si el token ya expiró
@@ -5302,17 +5306,17 @@
             
             if (!tokenClient) {
                 console.error('Token client no disponible');
-                handleTokenExpired();
                 return false;
             }
             
             try {
                 // Solicitar nuevo token silenciosamente
                 tokenClient.requestAccessToken({ prompt: '' });
+                console.log('✅ Token renovado exitosamente');
                 return true;
             } catch (error) {
                 console.error('Error refrescando token:', error);
-                handleTokenExpired();
+                // No cerrar sesión aquí, solo registrar el error
                 return false;
             }
         }
@@ -5324,18 +5328,31 @@
                 clearInterval(tokenRefreshTimer);
             }
             
-            // Verificar cada minuto
+            // Verificar cada 30 segundos (antes era 60)
             tokenRefreshTimer = setInterval(async () => {
-                if (isTokenExpired()) {
-                    console.warn('⚠️ Token expirado');
-                    handleTokenExpired();
-                } else if (isTokenExpiringSoon()) {
+                // Si el token está por expirar, renovarlo
+                if (isTokenExpiringSoon()) {
                     console.log('⏰ Token por expirar, refrescando...');
                     await refreshToken();
                 }
-            }, 60000); // Cada 60 segundos
+                // Si ya expiró, intentar renovar de todas formas
+                else if (isTokenExpired()) {
+                    console.warn('⚠️ Token expirado, intentando renovar...');
+                    const renewed = await refreshToken();
+                    // Si no se pudo renovar después de 3 intentos, entonces sí cerrar sesión
+                    if (!renewed) {
+                        tokenRefreshAttempts = (tokenRefreshAttempts || 0) + 1;
+                        if (tokenRefreshAttempts >= 3) {
+                            console.error('❌ No se pudo renovar el token después de 3 intentos');
+                            handleTokenExpired();
+                        }
+                    } else {
+                        tokenRefreshAttempts = 0;
+                    }
+                }
+            }, 30000); // Cada 30 segundos
             
-            console.log('✅ Timer de refresh iniciado');
+            console.log('✅ Timer de refresh iniciado (cada 30s)');
         }
         
         // Detener timer de refresh
@@ -5348,7 +5365,17 @@
         }
 
         function handleTokenExpired() {
-            console.warn('❌ Token expirado - limpiando sesión');
+            console.warn('❌ Token expirado - intentando renovar antes de cerrar sesión...');
+            
+            // Primero intentar renovar automáticamente
+            if (tokenClient) {
+                tokenClient.requestAccessToken({ prompt: '' });
+                console.log('🔄 Intentando renovación automática...');
+                return;
+            }
+            
+            // Si no hay tokenClient, entonces sí limpiar
+            console.warn('❌ No se puede renovar - limpiando sesión');
             
             // Detener timer
             stopTokenRefreshTimer();
@@ -5359,12 +5386,17 @@
             localStorage.removeItem('google_token_expiry');
             localStorage.removeItem('stefy_user');
             
-            // Mostrar mensaje amigable
-            const message = getTranslation('sessionExpired') || 'Tu sesión ha expirado. Por favor inicia sesión de nuevo.';
-            alert(message);
+            // Mostrar modal personalizado en lugar de alert
+            showAlert(
+                'Tu sesión ha expirado por inactividad prolongada.<br><br>Por favor inicia sesión de nuevo.',
+                'Sesión expirada',
+                'warning'
+            );
             
-            // Recargar página para mostrar login
-            location.reload();
+            // Recargar página después de que cierre el modal
+            setTimeout(() => {
+                location.reload();
+            }, 3000);
         }
 
         // Listar archivos recientes
@@ -9480,6 +9512,39 @@
                 }
             });
         });
+
+        // ==========================================
+        // MANEJO AVANZADO DE SESIÓN
+        // ==========================================
+        
+        // Detectar cuando el usuario vuelve a la pestaña
+        document.addEventListener('visibilitychange', async () => {
+            if (!document.hidden && accessToken) {
+                console.log('👁️ Usuario volvió a la pestaña - verificando token...');
+                
+                // Verificar si el token está por expirar o expiró
+                if (isTokenExpiringSoon() || isTokenExpired()) {
+                    console.log('🔄 Token necesita renovación - renovando...');
+                    await refreshToken();
+                }
+            }
+        });
+        
+        // Detectar cuando la ventana recupera el foco
+        window.addEventListener('focus', async () => {
+            if (accessToken && (isTokenExpiringSoon() || isTokenExpired())) {
+                console.log('🔄 Ventana enfocada - renovando token...');
+                await refreshToken();
+            }
+        });
+        
+        // Renovar proactivamente cada 45 minutos
+        setInterval(async () => {
+            if (accessToken && tokenClient) {
+                console.log('⏰ Renovación proactiva (45 min) - refrescando token...');
+                await refreshToken();
+            }
+        }, 45 * 60 * 1000); // 45 minutos
 
         // ==========================================
         // SERVICE WORKER (PWA) - Comentado temporalmente
